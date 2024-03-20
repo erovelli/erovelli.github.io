@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://erovelli.github.io//sitemap.xml
+Sitemap: https://erovelli.github.io/sitemap.xml
