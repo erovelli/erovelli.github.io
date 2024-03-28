@@ -14,97 +14,106 @@
       "countryCode": "US",
       "region": "Massachusetts"
     },
-    "profiles": [{
-      "network": "LinkedIn",
-      "username": "erovelli",
-      "url": "https://www.linkedin.com/in/erovelli/"
-    }]
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "erovelli",
+        "url": "https://www.linkedin.com/in/erovelli/"
+      }
+    ]
   },
-  "work": [{
-    "name": "Fidelity Investments",
-    "position": "Software Engineer",
-    "url": "https://www.fidelity.com/",
-    "startDate": "2024-06-17",
-    "endDate": "present",
-    "summary": "Description…",
-    "highlights": [
-      "todo"
-    ]
-  }],
-  "volunteer": [{
-    "organization": "Organization",
-    "position": "Volunteer",
-    "url": "https://organization.com/",
-    "startDate": "2012-01-01",
-    "endDate": "2013-01-01",
-    "summary": "Description…",
-    "highlights": [
-      "Awarded 'Volunteer of the Month'"
-    ]
-  }],
-  "education": [{
-    "institution": "University of Massachusetts, Amherst",
-    "url": "https://www.umass.edu/",
-    "area": "Computer Engineering",
-    "studyType": "Bachelor of Science",
-    "startDate": "2020-08-24",
-    "endDate": "2024-05-17",
-    "score": "4.0",
-    "courses": [
-      "ECE568"
-    ]
-  }],
-  "awards": [{
-    "title": "Eta Kappa Nu",
-    "date": "2022-03-17",
-    "awarder": "Delta Eta",
-    "summary": "There is no spoon."
-  }],
-  "certificates": [{
-    "name": "Certificate",
-    "date": "2021-11-07",
-    "issuer": "Company",
-    "url": "https://certificate.com"
-  }],
-  "publications": [{
-    "name": "Publication",
-    "publisher": "Company",
-    "releaseDate": "2014-10-01",
-    "url": "https://publication.com",
-    "summary": "Description…"
-  }],
-  "skills": [{
-    "name": "Web Development",
-    "level": "proficient",
-    "keywords": [
-      "HTML",
-      "CSS",
-      "JavaScript"
-    ]
-  }],
-  "languages": [{
-    "language": "English",
-    "fluency": "Native speaker"
-  }],
-  "interests": [{
-    "name": "Wildlife",
-    "keywords": [
-      "Ferrets",
-      "Unicorns"
-    ]
-  }],
-  "references": [{
-    "name": "Jane Doe",
-    "reference": "Reference…"
-  }],
-  "projects": [{
-    "name": "Project",
-    "startDate": "2019-01-01",
-    "endDate": "2021-01-01",
-    "description": "Description...",
-    "highlights": [
-      "Won award at AIHacks 2016"
-    ],
-    "url": "https://project.com/"
-  }]
+  "work": [
+    {
+      "name": "Fidelity Investments",
+      "position": "Software Engineer",
+      "url": "https://www.fidelity.com/",
+      "startDate": "2024-06-17",
+      "endDate": "present",
+      "summary": "Description…",
+      "highlights": ["todo"]
+    }
+  ],
+  "volunteer": [
+    {
+      "organization": "Organization",
+      "position": "Volunteer",
+      "url": "https://organization.com/",
+      "startDate": "2012-01-01",
+      "endDate": "2013-01-01",
+      "summary": "Description…",
+      "highlights": ["Awarded 'Volunteer of the Month'"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "University of Massachusetts, Amherst",
+      "url": "https://www.umass.edu/",
+      "area": "Computer Engineering",
+      "studyType": "Bachelor of Science",
+      "startDate": "2020-08-24",
+      "endDate": "2024-05-17",
+      "score": "4.0",
+      "courses": ["ECE568"]
+    }
+  ],
+  "awards": [
+    {
+      "title": "Eta Kappa Nu",
+      "date": "2022-03-17",
+      "awarder": "Delta Eta",
+      "summary": "There is no spoon."
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Certificate",
+      "date": "2021-11-07",
+      "issuer": "Company",
+      "url": "https://certificate.com"
+    }
+  ],
+  "publications": [
+    {
+      "name": "Publication",
+      "publisher": "Company",
+      "releaseDate": "2014-10-01",
+      "url": "https://publication.com",
+      "summary": "Description…"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Web Development",
+      "level": "proficient",
+      "keywords": ["HTML", "CSS", "JavaScript"]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native speaker"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Wildlife",
+      "keywords": ["Ferrets", "Unicorns"]
+    }
+  ],
+  "references": [
+    {
+      "name": "Jane Doe",
+      "reference": "Reference…"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Project",
+      "startDate": "2019-01-01",
+      "endDate": "2021-01-01",
+      "description": "Description...",
+      "highlights": ["Won award at AIHacks 2016"],
+      "url": "https://project.com/"
+    }
+  ]
 }
