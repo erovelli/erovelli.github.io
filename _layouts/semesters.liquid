@@ -15,12 +15,27 @@ layout: default
     <div class="cv">
       {% assign semesters = site.data.courses.semesters %}
       {% for semester in semesters %}
+        {% assign totalCredits = 0 %}
+        {% for course in semester.courses %}
+          {% assign totalCredits = totalCredits | plus: course.credits | plus: 0 %}
+        {% endfor %}
         <a class="anchor" id="{{ semester.season }}-{{ semester.year }}"></a>
         <div class="card mt-3 p-3">
-          <h3 class="card-title font-weight-medium">
-            {{ semester.season }}
-            {{ semester.year }}
-          </h3>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 class="card-title font-weight-medium">
+              {{ semester.season }}
+              {{ semester.year }}
+            </h3>
+            <h4>
+              <span
+                class="badge font-weight-bold danger-color-dark text-uppercase"
+                style="min-width: 75px; background-color: var(--global-theme-color) !important;color: var(--global-card-bg-color) !important;"
+              >
+                {{- totalCredits }} Credits</span
+              >
+            </h4>
+          </div>
+
           <div>
             {% include courses/courses.liquid %}
           </div>
