@@ -1,0 +1,24 @@
+{
+  "name": "Evan Rovelli",
+  "initials": "ER",
+  "role": "Software engineer",
+  "description": "Software engineer in Cambridge, Massachusetts. Local-first tools, data products, and embedded systems.",
+  "domain": "erovel.li",
+  "url": "https://erovel.li",
+  "location": "Cambridge, Massachusetts",
+  "locationShort": "Cambridge, MA",
+  "email": "evan.rovelli@gmail.com",
+  "resumeUrl": null,
+  "socials": [
+    {
+      "label": "GitHub",
+      "href": "https://github.com/erovelli",
+      "handle": "@erovelli"
+    },
+    {
+      "label": "LinkedIn",
+      "href": "https://www.linkedin.com/in/erovelli",
+      "handle": "/in/erovelli"
+    }
+  ]
+}

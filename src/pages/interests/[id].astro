@@ -1,0 +1,59 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const interests = await getCollection('interests');
+
+  return interests.map((interest) => ({
+    params: { id: interest.id },
+    props: { interest },
+  }));
+}
+
+interface Props {
+  interest: CollectionEntry<'interests'>;
+}
+
+const { interest } = Astro.props;
+const { Content } = await render(interest);
+const hasBody = Boolean(interest.body?.trim());
+const { title, summary, topics } = interest.data;
+---
+
+<BaseLayout title={title} description={summary}>
+  <header class="detail-intro">
+    <p class="eyebrow">Interest / {topics.join(' / ')}</p>
+    <h1>{title}</h1>
+    {summary && <p class="detail-dek">{summary}</p>}
+  </header>
+
+  <div class="detail-layout">
+    <article class:list={['detail-main', !hasBody && 'detail-main-bare']}>
+      {
+        hasBody && (
+          <div class="prose">
+            <Content />
+          </div>
+        )
+      }
+
+      <nav class="detail-navigation" aria-label="Interest navigation">
+        <a href="/interests/">← Back to interests</a>
+      </nav>
+    </article>
+
+    <aside class="detail-rail" aria-label="Interest metadata">
+      <section aria-labelledby="interest-details">
+        <h2 id="interest-details">Filed under</h2>
+        <ul class="rail-topics">
+          {topics.map((topic) => <li>{topic}</li>)}
+        </ul>
+      </section>
+      <nav class="rail-links" aria-label="Related pages">
+        <a href="/interests/">Interest index →</a>
+        <a href="/projects/">Project index →</a>
+      </nav>
+    </aside>
+  </div>
+</BaseLayout>

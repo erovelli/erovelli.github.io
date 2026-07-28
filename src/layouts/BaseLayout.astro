@@ -1,0 +1,149 @@
+---
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { site } from '../config';
+import '../styles/global.css';
+
+interface Props {
+  /** Page name. Omit on the homepage to use the site title verbatim. */
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  /** Set on pages that must stay out of the index, e.g. the 404. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = site.description,
+  canonicalPath = Astro.url.pathname,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = title ? `${title} — ${site.name}` : site.title;
+const canonical = new URL(canonicalPath, site.url);
+const ogImage = new URL('/og.png', site.url);
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  url: site.url,
+  jobTitle: site.role,
+  email: site.email,
+  homeLocation: {
+    '@type': 'Place',
+    name: site.location,
+  },
+  sameAs: site.socials.map((social) => social.href),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      (() => {
+        let stored = null;
+
+        try {
+          stored = localStorage.getItem('theme');
+        } catch {}
+
+        const hasChoice = stored === 'light' || stored === 'dark';
+        const theme = hasChoice
+          ? stored
+          : window.matchMedia('(prefers-color-scheme: dark)').matches
+            ? 'dark'
+            : 'light';
+
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.dataset.themeSource = hasChoice
+          ? 'user'
+          : 'system';
+      })();
+    </script>
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+
+    <meta
+      name="theme-color"
+      content="#f3f0e6"
+      data-light="#f3f0e6"
+      data-dark="#0c1115"
+    />
+    <script is:inline>
+      (() => {
+        const meta = document.querySelector('meta[name="theme-color"]');
+        const theme = document.documentElement.dataset.theme;
+        if (meta && theme) {
+          meta.setAttribute(
+            'content',
+            theme === 'dark'
+              ? meta.getAttribute('data-dark')
+              : meta.getAttribute('data-light'),
+          );
+        }
+      })();
+    </script>
+
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    {
+      /* The Latin subset covers effectively all copy on this site, so it is
+        worth fetching before the stylesheet discovers it. crossorigin is
+        required even same-origin or the preload is discarded and refetched. */
+    }
+    <link
+      rel="preload"
+      href="/fonts/inter-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content={`${site.name} — ${site.role}, ${site.locationShort}`}
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(personSchema)}
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="site-shell">
+      <Header />
+      <main id="main-content">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+  </body>
+</html>

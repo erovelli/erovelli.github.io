@@ -1,0 +1,17 @@
+---
+import github from '../assets/icons/simple-icons/github.svg?url';
+
+interface Props {
+  name: 'github';
+  class?: string;
+}
+
+const icons = { github } as const;
+const { name, class: className } = Astro.props;
+const source = icons[name];
+---
+
+<span
+  class:list={['brand-icon', className]}
+  style={`--brand-icon-source: url("${source}")`}
+  aria-hidden="true"></span>

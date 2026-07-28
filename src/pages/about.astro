@@ -1,0 +1,79 @@
+---
+import { getCollection, render } from 'astro:content';
+import Module from '../components/Module.astro';
+import NowPanel from '../components/NowPanel.astro';
+import PageIntro from '../components/PageIntro.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+
+/*
+  Every claim on this page is one already asserted elsewhere in this repo.
+
+  TODO — only you can supply these, so they remain absent rather than guessed:
+    - employment dates and job titles
+    - degree, graduation year, and anything before UMass Amherst
+    - a résumé PDF
+    - one or two genuinely non-technical interests
+*/
+const now = (await getCollection('profile')).find(
+  (entry) => entry.id === 'now',
+);
+
+if (!now) {
+  throw new Error('About page requires profile/now.');
+}
+
+const { Content: NowContent } = await render(now);
+---
+
+<BaseLayout
+  title="About"
+  description={`About ${site.name}, a software engineer in ${site.location}.`}
+>
+  <PageIntro
+    eyebrow="About"
+    title="About"
+    lead={`Software engineer in ${site.location}. Computer engineering by training, full-stack by trade, systems and local-first tools by preference.`}
+  />
+
+  <div class="detail-layout about-layout">
+    <article class="detail-main">
+      <div class="prose">
+        <h2>Now</h2>
+        <NowContent />
+
+        <h2>Background</h2>
+        <p>
+          I studied computer engineering at UMass Amherst. My senior design
+          project was <a href="/projects/moduloop/">ModuLoop</a>, a hardware
+          music sequencer built by four of us; I led the software architecture,
+          which meant learning the hard way how embedded timing, storage latency
+          and audio scheduling interact. Hardware is still the fastest way I
+          know to be corrected by reality.
+        </p>
+
+        <h2>Elsewhere</h2>
+        <p>
+          Email is the best way to reach me: <a href={site.mailto}
+            >{site.email}</a
+          >. Code is on <a href={site.socials[0]?.href}>GitHub</a>; the more
+          formal version of all this lives on <a href={site.socials[1]?.href}
+            >LinkedIn</a
+          >.
+        </p>
+      </div>
+
+      <nav class="detail-navigation" aria-label="About page links">
+        <a href={site.mailto}>Email me →</a>
+        {site.resumeUrl && <a href={site.resumeUrl}>Download résumé ↓</a>}
+        <a href="/projects/">See the work →</a>
+      </nav>
+    </article>
+
+    <div class="about-rail">
+      <Module title="Currently" id="about-currently" headingLevel={2}>
+        <NowPanel rows={now.data.rows} />
+      </Module>
+    </div>
+  </div>
+</BaseLayout>

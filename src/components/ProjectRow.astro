@@ -1,0 +1,48 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { PixelIconName } from '../icon-types';
+import PixelIcon from './PixelIcon.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+  headingLevel?: 2 | 3;
+}
+
+const { project, headingLevel = 2 } = Astro.props;
+const { title, summary, status, year, technologies } = project.data;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const href = `/projects/${project.id}/`;
+const projectIcons = {
+  'medicaid-dental-atlas': 'chart',
+  moduloop: 'keyboard-music',
+  outdegree: 'git-branch',
+  tidyup: 'file-text',
+  utils: 'terminal',
+} as const satisfies Record<string, PixelIconName>;
+const icon =
+  projectIcons[project.id as keyof typeof projectIcons] ?? 'file-text';
+---
+
+<article
+  class:list={['index-row', 'project-row', !summary && 'index-row-bare']}
+>
+  <div class="row-primary">
+    <PixelIcon name={icon} class="row-icon" />
+    <div>
+      <p class="row-kicker">
+        <span>{year}</span>
+        <span aria-hidden="true"> / </span>
+        <span class="status-label">{status}</span>
+      </p>
+      <Heading class="row-title"><a href={href}>{title}</a></Heading>
+    </div>
+  </div>
+
+  {summary && <p class="row-summary">{summary}</p>}
+
+  <ul class="metadata-list" aria-label={`${title}: technologies used`}>
+    {technologies.map((technology) => <li>{technology}</li>)}
+  </ul>
+
+  <span class="row-arrow" aria-hidden="true">→</span>
+</article>

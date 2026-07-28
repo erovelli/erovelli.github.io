@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { navigation } from '../config';
+---
+
+{/* noindex: a 404 that gets indexed competes with the pages that do exist. */}
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist."
+  noindex
+>
+  <section class="page-intro">
+    <p class="eyebrow">Error 404</p>
+    <h1>Page not found</h1>
+    <p class="lead">
+      There is nothing at this address. The link may be out of date, or I may
+      have moved the page.
+    </p>
+    <div class="actions">
+      {
+        navigation.map((item) => (
+          <a class="button" href={item.href}>
+            {item.label}
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>

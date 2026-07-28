@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import InterestRow from '../../components/InterestRow.astro';
+import Module from '../../components/Module.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const interests = (await getCollection('interests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Interests"
+  description="The ideas and practices Evan Rovelli keeps coming back to: local-first software, systems design, Rust, data visualisation, and hardware."
+>
+  <PageIntro
+    eyebrow="Notes"
+    title="Interests"
+    lead="Ideas I keep coming back to, and why. Shorter and less finished than the project write-ups."
+  />
+
+  <Module title="Interest index" id="interest-index" class="page-index">
+    <div class="index-list">
+      {
+        interests.map((interest) => (
+          <InterestRow interest={interest} headingLevel={3} />
+        ))
+      }
+    </div>
+  </Module>
+</BaseLayout>

@@ -1,0 +1,32 @@
+---
+import { getCollection } from 'astro:content';
+import Module from '../../components/Module.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import ProjectRow from '../../components/ProjectRow.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Projects"
+  description="Local-first tools, data products, browser utilities, and embedded hardware built by Evan Rovelli."
+>
+  <PageIntro
+    eyebrow="Work"
+    title="Projects"
+    lead="Local-first tools, data products, browser utilities, and one embedded instrument. Each of these started with a problem I actually had."
+  />
+
+  <Module title="Project index" id="project-index" class="page-index">
+    <div class="index-list">
+      {
+        projects.map((project) => (
+          <ProjectRow project={project} headingLevel={3} />
+        ))
+      }
+    </div>
+  </Module>
+</BaseLayout>

@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import InterestRow from '../components/InterestRow.astro';
+import Module from '../components/Module.astro';
+import NowPanel from '../components/NowPanel.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config';
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const interests = (await getCollection('interests')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const outdegree = projects.find((project) => project.id === 'outdegree');
+const now = (await getCollection('profile')).find(
+  (entry) => entry.id === 'now',
+);
+
+if (!outdegree || !now) {
+  throw new Error('Homepage requires the Outdegree project and profile/now.');
+}
+---
+
+<BaseLayout>
+  <div class="home-board">
+    <section class="home-intro" aria-labelledby="intro-title">
+      <h1 id="intro-title">I’m Evan. I’m a software engineer.</h1>
+      <p>
+        I’m a computer engineer by training and a software engineer by trade,
+        based in {site.location}. At Fidelity I work on batch platforms and
+        billing systems. On my own time I build local-first tools in Rust,
+        mostly things I wanted to exist and couldn’t find.
+      </p>
+      <nav class="intro-links" aria-label="Introduction">
+        <a href="/projects/">View projects <span aria-hidden="true">→</span></a>
+        <a href="/about/">About me <span aria-hidden="true">→</span></a>
+        {
+          site.resumeUrl && (
+            <a href={site.resumeUrl}>
+              Résumé <span aria-hidden="true">↓</span>
+            </a>
+          )
+        }
+      </nav>
+    </section>
+
+    <Module title="Currently" id="currently" class="home-currently">
+      <NowPanel rows={now.data.rows} />
+    </Module>
+
+    <Module title="Featured project" id="featured" class="home-featured">
+      <article class="featured-project">
+        <div class="featured-project-heading">
+          <p class="row-kicker">
+            <span class="status-label">{outdegree.data.status}</span>
+            <span aria-hidden="true"> / </span>
+            <span>{outdegree.data.year}</span>
+          </p>
+          <h3>
+            <span class="featured-marker" aria-hidden="true"></span>
+            <a href={`/projects/${outdegree.id}/`}>{outdegree.data.title}</a>
+          </h3>
+          {
+            outdegree.data.summary && (
+              <p class="featured-summary">{outdegree.data.summary}</p>
+            )
+          }
+        </div>
+
+        <dl class="project-spec">
+          <div>
+            <dt>Status</dt>
+            <dd>{outdegree.data.status}</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>{outdegree.data.year}</dd>
+          </div>
+          <div>
+            <dt>Technology</dt>
+            <dd>{outdegree.data.technologies.join(' / ')}</dd>
+          </div>
+        </dl>
+
+        <nav class="featured-links" aria-label="Outdegree links">
+          <a href={`/projects/${outdegree.id}/`}>Details →</a>
+          {
+            outdegree.data.repository && (
+              <a
+                href={outdegree.data.repository}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Source ↗<span class="sr-only">(opens in a new tab)</span>
+              </a>
+            )
+          }
+          {
+            outdegree.data.live && (
+              <a href={outdegree.data.live} target="_blank" rel="noreferrer">
+                {outdegree.data.liveLabel} ↗
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            )
+          }
+        </nav>
+      </article>
+    </Module>
+
+    <Module
+      title="Projects"
+      id="projects"
+      linkHref="/projects/"
+      linkLabel="View all"
+      class="home-projects"
+    >
+      <div class="index-list">
+        {
+          projects.map((project) => (
+            <ProjectRow project={project} headingLevel={3} />
+          ))
+        }
+      </div>
+    </Module>
+
+    <Module
+      title="Interests"
+      id="interests"
+      linkHref="/interests/"
+      linkLabel="View all"
+      class="home-interests"
+    >
+      <div class="interest-strip">
+        {
+          interests.map((interest) => (
+            <InterestRow interest={interest} headingLevel={3} />
+          ))
+        }
+      </div>
+    </Module>
+  </div>
+</BaseLayout>

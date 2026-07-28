@@ -1,0 +1,30 @@
+---
+import { site } from '../config';
+import BrandIcon from './BrandIcon.astro';
+import PixelIcon from './PixelIcon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <p class="footer-identity">
+    <PixelIcon name="smile" />
+    <span>© {year} {site.name}</span>
+  </p>
+  <a class="footer-email" href={site.mailto}>
+    <PixelIcon name="mail" />
+    <span>{site.email}</span>
+  </a>
+
+  <nav class="footer-nav" aria-label="Contact and social">
+    {
+      site.socials.map((social) => (
+        <a href={social.href} rel="me noreferrer" target="_blank">
+          {social.label === 'GitHub' && <BrandIcon name="github" />}
+          {social.label}
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      ))
+    }
+  </nav>
+</footer>

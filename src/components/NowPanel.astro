@@ -1,0 +1,30 @@
+---
+import type { PixelIconName } from '../icon-types';
+import PixelIcon from './PixelIcon.astro';
+
+interface Row {
+  label: string;
+  value: string;
+  icon: PixelIconName;
+}
+
+interface Props {
+  rows: Row[];
+}
+
+const { rows } = Astro.props;
+---
+
+<dl class="metadata-rows">
+  {
+    rows.map((row) => (
+      <div class="metadata-row">
+        <span class="metadata-icon">
+          <PixelIcon name={row.icon} />
+        </span>
+        <dt>{row.label}</dt>
+        <dd>{row.value}</dd>
+      </div>
+    ))
+  }
+</dl>

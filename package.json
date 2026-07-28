@@ -1,0 +1,34 @@
+{
+  "name": "erovelli-site",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "check": "astro check",
+    "check:build": "node scripts/check-build.mjs",
+    "check:contrast": "node scripts/check-contrast.mjs",
+    "assets": "node scripts/generate-assets.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "preview": "astro preview",
+    "validate": "npm run format:check && npm run check && npm run check:contrast && npm run build && npm run check:build",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.1.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.9",
+    "opentype.js": "^2.0.0",
+    "prettier": "^3.9.6",
+    "prettier-plugin-astro": "^0.14.1",
+    "sharp": "^0.35.3",
+    "typescript": "^6.0.3"
+  }
+}

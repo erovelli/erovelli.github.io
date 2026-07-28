@@ -1,0 +1,94 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+/* Entries can carry metadata with no copy written yet, in which case the dek
+   and the article are omitted rather than rendered empty. */
+const hasBody = Boolean(project.body?.trim());
+const {
+  title,
+  summary,
+  status,
+  year,
+  technologies,
+  repository,
+  live,
+  liveLabel,
+} = project.data;
+---
+
+<BaseLayout title={title} description={summary}>
+  <header class="detail-intro">
+    <p class="eyebrow">Project / {status} / {year}</p>
+    <h1>{title}</h1>
+    {summary && <p class="detail-dek">{summary}</p>}
+  </header>
+
+  <div class="detail-layout">
+    <article class:list={['detail-main', !hasBody && 'detail-main-bare']}>
+      {
+        hasBody && (
+          <div class="prose">
+            <Content />
+          </div>
+        )
+      }
+
+      <nav class="detail-navigation" aria-label="Project navigation">
+        <a href="/projects/">← Back to projects</a>
+      </nav>
+    </article>
+
+    <aside class="detail-rail" aria-label="Project metadata">
+      <section aria-labelledby="project-details">
+        <h2 id="project-details">Project details</h2>
+        <dl class="rail-list">
+          <div>
+            <dt>Status</dt>
+            <dd>{status}</dd>
+          </div>
+          <div>
+            <dt>Year</dt>
+            <dd>{year}</dd>
+          </div>
+          <div>
+            <dt>Technology</dt>
+            <dd>{technologies.join(' / ')}</dd>
+          </div>
+        </dl>
+      </section>
+
+      {
+        (repository || live) && (
+          <nav class="rail-links" aria-label="External project links">
+            {repository && (
+              <a href={repository} target="_blank" rel="noreferrer">
+                Source code ↗<span class="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
+            {live && (
+              <a href={live} target="_blank" rel="noreferrer">
+                {liveLabel} ↗<span class="sr-only">(opens in a new tab)</span>
+              </a>
+            )}
+          </nav>
+        )
+      }
+    </aside>
+  </div>
+</BaseLayout>

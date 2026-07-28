@@ -1,0 +1,69 @@
+<button
+  class="theme-control"
+  type="button"
+  aria-label="Switch theme"
+  aria-pressed="false"
+  data-theme-control
+  hidden
+>
+  <span class="theme-control-icon" aria-hidden="true">◐</span>
+  <span data-theme-label>Theme</span>
+</button>
+
+<script is:inline>
+  (() => {
+    const control = document.querySelector('[data-theme-control]');
+    const label = control?.querySelector('[data-theme-label]');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    if (!(control instanceof HTMLButtonElement) || !label) return;
+    control.hidden = false;
+
+    const currentTheme = () =>
+      document.documentElement.dataset.theme ||
+      (media.matches ? 'dark' : 'light');
+
+    const updateThemeColor = () => {
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      if (!themeColor) return;
+
+      const value = themeColor.getAttribute(
+        currentTheme() === 'dark' ? 'data-dark' : 'data-light',
+      );
+      if (value) themeColor.setAttribute('content', value);
+    };
+
+    const updateControl = () => {
+      const theme = currentTheme();
+      const next = theme === 'dark' ? 'light' : 'dark';
+      control.setAttribute('aria-pressed', String(theme === 'dark'));
+      control.setAttribute('aria-label', `Switch to ${next} theme`);
+      label.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    };
+
+    control.addEventListener('click', () => {
+      const next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      document.documentElement.dataset.themeSource = 'user';
+
+      try {
+        localStorage.setItem('theme', next);
+      } catch {}
+
+      updateThemeColor();
+      updateControl();
+    });
+
+    media.addEventListener('change', () => {
+      if (document.documentElement.dataset.themeSource !== 'user') {
+        document.documentElement.dataset.theme = media.matches
+          ? 'dark'
+          : 'light';
+        updateThemeColor();
+        updateControl();
+      }
+    });
+
+    updateControl();
+  })();
+</script>

@@ -1,0 +1,40 @@
+---
+interface Props {
+  title: string;
+  id: string;
+  headingLevel?: 2 | 3;
+  linkHref?: string;
+  linkLabel?: string;
+  class?: string;
+}
+
+const {
+  title,
+  id,
+  headingLevel = 2,
+  linkHref,
+  linkLabel,
+  class: className,
+} = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<section
+  class:list={['module', className]}
+  aria-labelledby={`${id}-module-title`}
+>
+  <header class="module-header">
+    <Heading id={`${id}-module-title`}>{title}</Heading>
+    {
+      linkHref && linkLabel && (
+        <a class="module-link" href={linkHref}>
+          {linkLabel}
+          <span aria-hidden="true"> →</span>
+        </a>
+      )
+    }
+  </header>
+  <div class="module-body">
+    <slot />
+  </div>
+</section>

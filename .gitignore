@@ -1,0 +1,27 @@
+# build output
+dist/
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# Font cache for scripts/generate-assets.mjs. Fetched on demand from pinned
+# URLs; the generated PNGs in public/ are committed, these sources are not.
+tools/.fonts/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# jetbrains setting folder
+.idea/

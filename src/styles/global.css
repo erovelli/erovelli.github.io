@@ -1,0 +1,1317 @@
+/*
+  Forest Instrument / Night Terminal
+
+  Theme colours, dimensions, spacing, and type sizes are tokens. Components use
+  semantic values only, so the two palettes share identical geometry.
+*/
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/inter-latin-ext.woff2') format('woff2');
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
+    U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB,
+    U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+:root {
+  color-scheme: light;
+
+  --light-canvas: #f3f0e6;
+  --light-surface: #f7f4ec;
+  --light-ink: #151a16;
+  --light-ink-muted: #59645c;
+  --light-rule: #283229;
+  --light-rule-subtle: #98a096;
+  --light-accent: #18583a;
+  --light-accent-strong: #10462d;
+  --light-accent-tint: #c9d7c8;
+  --light-focus: #18583a;
+
+  --dark-canvas: #0c1115;
+  --dark-surface: #0f161b;
+  --dark-ink: #eee9de;
+  --dark-ink-muted: #a8b0ac;
+  --dark-rule: #65727b;
+  --dark-rule-subtle: #344049;
+  --dark-accent: #6f8cff;
+  --dark-accent-strong: #91a6ff;
+  --dark-accent-tint: #3a4c61;
+  --dark-focus: #65b8c7;
+
+  --canvas: var(--light-canvas);
+  --surface: var(--light-surface);
+  --ink: var(--light-ink);
+  --ink-muted: var(--light-ink-muted);
+  --rule: var(--light-rule);
+  --rule-subtle: var(--light-rule-subtle);
+  --accent: var(--light-accent);
+  --accent-strong: var(--light-accent-strong);
+  --accent-tint: var(--light-accent-tint);
+  --focus: var(--light-focus);
+
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: Georgia, 'Times New Roman', Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono',
+    monospace;
+
+  --text-2xs: 0.8125rem;
+  --text-xs: 0.875rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  --text-2xl: clamp(1.625rem, 1.3rem + 1.3vw, 2.25rem);
+  --text-3xl: clamp(2rem, 1.45rem + 2.2vw, 3.25rem);
+  --text-4xl: clamp(2.625rem, 1.65rem + 4vw, 5rem);
+
+  --leading-tight: 1.05;
+  --leading-heading: 1.15;
+  --leading-copy: 1.45;
+  --leading-body: 1.65;
+  --tracking-tight: -0.035em;
+  --tracking-label: 0.035em;
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+
+  --width-page: 93.75rem;
+  --width-prose: 44rem;
+  --width-lead: 50rem;
+  --width-rail: 19rem;
+  --width-mobile-min: 17.5rem;
+  --page-gutter: clamp(1rem, 2vw, 2rem);
+  --control-min: 2.75rem;
+  --rule-width: 0.0625rem;
+  --focus-width: 0.125rem;
+  --focus-offset: 0.1875rem;
+  --shift: 0.125rem;
+  --icon-size: 1.5rem;
+  --icon-size-lg: 2rem;
+  --icon-cell: 3.5rem;
+  --transition-fast: 140ms;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: var(--dark-canvas);
+  --surface: var(--dark-surface);
+  --ink: var(--dark-ink);
+  --ink-muted: var(--dark-ink-muted);
+  --rule: var(--dark-rule);
+  --rule-subtle: var(--dark-rule-subtle);
+  --accent: var(--dark-accent);
+  --accent-strong: var(--dark-accent-strong);
+  --accent-tint: var(--dark-accent-tint);
+  --focus: var(--dark-focus);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --canvas: var(--dark-canvas);
+    --surface: var(--dark-surface);
+    --ink: var(--dark-ink);
+    --ink-muted: var(--dark-ink-muted);
+    --rule: var(--dark-rule);
+    --rule-subtle: var(--dark-rule-subtle);
+    --accent: var(--dark-accent);
+    --accent-strong: var(--dark-accent-strong);
+    --accent-tint: var(--dark-accent-tint);
+    --focus: var(--dark-focus);
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-width: var(--width-mobile-min);
+  margin: 0;
+  background: var(--canvas);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin-block: 0;
+}
+
+/* The UA gives dd a 40px inline start margin, which pushes every value out of
+   line with the label above it in the metadata tables. */
+dd {
+  margin-inline-start: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 650;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-heading);
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--text-4xl);
+}
+
+h2 {
+  font-size: var(--text-2xl);
+}
+
+h3 {
+  font-size: var(--text-xl);
+}
+
+a {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-thickness: var(--rule-width);
+  text-underline-offset: var(--space-3xs);
+  transition:
+    color var(--transition-fast) ease,
+    text-decoration-color var(--transition-fast) ease;
+}
+
+a:hover {
+  color: var(--accent-strong);
+  text-decoration-thickness: var(--focus-width);
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  border-radius: 0;
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+::selection {
+  background: var(--accent-tint);
+  color: var(--ink);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.pixel-icon {
+  display: inline-block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+  background-color: currentColor;
+  image-rendering: pixelated;
+  -webkit-mask: var(--pixel-icon-source) center / contain no-repeat;
+  mask: var(--pixel-icon-source) center / contain no-repeat;
+}
+
+.brand-icon {
+  display: inline-block;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask: var(--brand-icon-source) center / contain no-repeat;
+  mask: var(--brand-icon-source) center / contain no-repeat;
+}
+
+.site-shell {
+  display: flex;
+  width: min(calc(100% - (var(--page-gutter) * 2)), var(--width-page));
+  min-height: 100dvh;
+  flex-direction: column;
+  margin-inline: auto;
+}
+
+main {
+  flex: 1;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 10;
+  top: var(--space-2xs);
+  left: var(--space-2xs);
+  border: var(--rule-width) solid var(--ink);
+  background: var(--surface);
+  color: var(--ink);
+  padding: var(--space-2xs) var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+}
+
+.skip-link:not(:focus) {
+  clip-path: inset(50%);
+}
+
+/* Header */
+
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-lg);
+  border-bottom: var(--rule-width) solid var(--rule);
+  padding-block: var(--space-sm);
+}
+
+.wordmark {
+  flex: none;
+  color: var(--ink);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  text-decoration: none;
+}
+
+.header-tools {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-md);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.nav-link {
+  min-height: var(--control-min);
+  padding: var(--space-2xs) var(--space-3xs);
+  color: var(--ink);
+  line-height: var(--leading-copy);
+  /* --rule-subtle is a hairline colour: on the dark canvas it renders an
+     underline that is effectively invisible, so the nav loses its links. */
+  text-decoration-color: var(--ink-muted);
+}
+
+.nav-link[aria-current='page'] {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: var(--focus-width);
+}
+
+.nav-separator {
+  color: var(--ink-muted);
+}
+
+.theme-control {
+  display: inline-flex;
+  min-width: var(--control-min);
+  min-height: var(--control-min);
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  border: var(--rule-width) solid var(--rule);
+  border-radius: 0;
+  background: var(--surface);
+  color: var(--ink);
+  padding-inline: var(--space-xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  cursor: pointer;
+  transition:
+    border-color var(--transition-fast) ease,
+    color var(--transition-fast) ease,
+    transform var(--transition-fast) ease;
+}
+
+.theme-control:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(calc(var(--shift) * -1));
+}
+
+.theme-control-icon {
+  color: var(--accent);
+  font-size: var(--text-base);
+}
+
+/* Shared modules */
+
+.module {
+  min-width: 0;
+  border: var(--rule-width) solid var(--rule);
+  background: var(--surface);
+}
+
+.module-header {
+  display: flex;
+  min-height: var(--control-min);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: var(--rule-width) solid var(--rule);
+  padding: var(--space-2xs) var(--space-xs);
+}
+
+.module-header h2,
+.module-header h3 {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 650;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.module-link {
+  display: inline-flex;
+  min-height: var(--control-min);
+  align-items: center;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  white-space: nowrap;
+}
+
+.module-body {
+  min-width: 0;
+}
+
+/* Homepage */
+
+.home-board {
+  display: grid;
+  grid-template-areas:
+    'intro featured'
+    'currently featured'
+    'projects projects'
+    'interests interests';
+  grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+}
+
+.home-intro {
+  grid-area: intro;
+  padding: var(--space-2xs) var(--space-2xs) var(--space-sm);
+}
+
+.home-intro h1 {
+  max-width: var(--width-lead);
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: var(--leading-copy);
+}
+
+.home-intro > p {
+  max-width: var(--width-lead);
+  margin-top: var(--space-sm);
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: var(--leading-copy);
+}
+
+.intro-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-md);
+  margin-top: var(--space-md);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.intro-links a,
+.featured-links a,
+.detail-navigation a,
+.rail-links a {
+  color: var(--accent);
+}
+
+.intro-links a,
+.detail-navigation a,
+.footer-email,
+.footer-nav a {
+  display: inline-flex;
+  min-height: var(--control-min);
+  align-items: center;
+}
+
+.home-currently {
+  grid-area: currently;
+}
+
+/*
+  The panel is a container so the rows stack on their own measurement rather
+  than the viewport's: the same component sits full width on the homepage and
+  inside a 19rem rail on the About page, where three columns cannot fit.
+*/
+.metadata-rows {
+  display: grid;
+  container: metadata / inline-size;
+}
+
+.metadata-row {
+  display: grid;
+  grid-template-columns:
+    var(--icon-cell) minmax(7rem, 1fr)
+    minmax(0, 2.5fr);
+}
+
+@container metadata (max-width: 30rem) {
+  .metadata-row {
+    grid-template-columns: var(--icon-cell) minmax(0, 1fr);
+  }
+
+  .metadata-icon {
+    grid-row: 1 / 3;
+  }
+
+  .metadata-row dt {
+    grid-column: 2;
+    border-right: 0;
+    border-bottom: var(--rule-width) solid var(--rule-subtle);
+  }
+
+  .metadata-row dd {
+    grid-column: 2;
+  }
+}
+
+.metadata-row + .metadata-row {
+  border-top: var(--rule-width) solid var(--rule-subtle);
+}
+
+.metadata-row dt,
+.metadata-row dd {
+  padding: var(--space-xs);
+}
+
+.metadata-icon {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  border-right: var(--rule-width) solid var(--rule-subtle);
+  color: var(--accent);
+}
+
+.metadata-row dt {
+  border-right: var(--rule-width) solid var(--rule-subtle);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.metadata-row dd {
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  line-height: var(--leading-copy);
+}
+
+/*
+  The featured module sits beside the introduction and the Currently panel, and
+  is shorter than the two of them together. Aligning it to the start keeps the
+  ruled box tight around its content: stretching it leaves a void inside the
+  border where the reference mockup has a graph figure, and no real Outdegree
+  diagram exists to put there.
+*/
+.home-featured {
+  grid-area: featured;
+  align-self: start;
+}
+
+.featured-project {
+  display: grid;
+  grid-template-rows: auto auto auto;
+}
+
+.featured-project-heading {
+  padding: var(--space-sm);
+}
+
+.row-kicker {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.status-label {
+  color: var(--accent);
+}
+
+.featured-project h3 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-2xs);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-3xl);
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+}
+
+.featured-project h3 a {
+  text-decoration: none;
+}
+
+.featured-marker {
+  width: var(--space-sm);
+  height: var(--space-sm);
+  flex: none;
+  background: var(--accent);
+}
+
+.featured-summary {
+  max-width: var(--width-lead);
+  margin-top: var(--space-sm);
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-copy);
+}
+
+.project-spec {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: var(--rule-width) solid var(--rule);
+}
+
+.project-spec > div {
+  min-width: 0;
+  padding: var(--space-xs);
+}
+
+.project-spec > div + div {
+  border-left: var(--rule-width) solid var(--rule-subtle);
+}
+
+.project-spec dt,
+.rail-list dt {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+}
+
+.project-spec dd,
+.rail-list dd {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: var(--leading-copy);
+  overflow-wrap: anywhere;
+}
+
+.featured-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: var(--rule-width) solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}
+
+.featured-links a {
+  display: grid;
+  min-height: var(--control-min);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2xs);
+  text-align: center;
+}
+
+.featured-links a + a {
+  border-left: var(--rule-width) solid var(--rule-subtle);
+}
+
+.home-projects {
+  grid-area: projects;
+}
+
+.home-interests {
+  grid-area: interests;
+}
+
+/* Dense indexes */
+
+.index-list {
+  display: grid;
+}
+
+.index-row {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  align-items: center;
+  gap: var(--space-xs) var(--space-md);
+  padding: var(--space-xs);
+  transition:
+    background-color var(--transition-fast) ease,
+    color var(--transition-fast) ease;
+}
+
+.index-row + .index-row {
+  border-top: var(--rule-width) solid var(--rule-subtle);
+}
+
+.index-row:hover {
+  background: var(--accent-tint);
+}
+
+.index-row:hover .row-kicker,
+.index-row:hover .row-summary,
+.index-row:hover .metadata-list {
+  color: var(--ink);
+}
+
+.project-row {
+  grid-template-columns:
+    minmax(10rem, 1.1fr) minmax(15rem, 2fr) minmax(10rem, 1fr)
+    auto;
+}
+
+/*
+  An entry with no summary yet drops that cell entirely. Without a matching
+  template the remaining children slide left into the description column and
+  the arrow stops meeting the right edge, so each row type restates its
+  columns without one.
+*/
+.project-row.index-row-bare {
+  grid-template-columns: minmax(10rem, 1.1fr) minmax(0, 1fr) auto;
+}
+
+.interest-row.index-row-bare {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.interest-row {
+  grid-template-columns: minmax(12rem, 1.1fr) minmax(15rem, 2fr) auto;
+}
+
+/*
+  .row-primary's first column is the project icon. Interests have none, so
+  their kicker and title stack in a single column instead of being dealt into
+  the icon slot and a squeezed remainder.
+*/
+.interest-row .row-primary {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.row-primary {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.row-primary > div {
+  min-width: 0;
+}
+
+.row-icon {
+  width: var(--icon-size-lg);
+  height: var(--icon-size-lg);
+  color: var(--accent);
+}
+
+.row-title {
+  margin-top: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  font-weight: 500;
+  letter-spacing: normal;
+}
+
+.row-title a {
+  color: var(--accent);
+}
+
+.row-title a::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+}
+
+.row-summary {
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  font-size: var(--text-sm);
+  line-height: var(--leading-copy);
+}
+
+.metadata-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3xs) var(--space-2xs);
+  padding: 0;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: var(--leading-copy);
+  list-style: none;
+}
+
+.metadata-list li + li::before {
+  margin-right: var(--space-2xs);
+  color: var(--rule-subtle);
+  content: '/';
+}
+
+.row-arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+
+.interest-strip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.interest-strip .index-row {
+  align-content: start;
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: var(--space-sm);
+}
+
+.interest-strip .index-row + .index-row {
+  border-top: 0;
+  border-left: var(--rule-width) solid var(--rule-subtle);
+}
+
+.interest-strip .row-summary {
+  display: none;
+}
+
+/* Page and detail layouts */
+
+.page-intro,
+.detail-intro {
+  max-width: var(--width-lead);
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+.eyebrow {
+  margin-bottom: var(--space-xs);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.page-intro h1,
+.detail-intro h1 {
+  max-width: var(--width-lead);
+}
+
+.lead,
+.detail-dek {
+  max-width: var(--width-lead);
+  margin-top: var(--space-sm);
+  color: var(--ink-muted);
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-copy);
+}
+
+.page-index {
+  margin-bottom: var(--space-xl);
+}
+
+.detail-intro {
+  max-width: none;
+  border-bottom: var(--rule-width) solid var(--rule);
+}
+
+.detail-intro h1 {
+  color: var(--accent);
+}
+
+.detail-dek {
+  max-width: var(--width-prose);
+}
+
+/*
+  The rail is fixed and the article column takes the rest, so both edges of the
+  layout line up with the header and footer rules. Sizing the article column to
+  the prose width instead would leave the rail floating in the middle of the
+  page with dead space to its right; the reading measure is held by .prose.
+*/
+.detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--width-rail);
+  gap: var(--space-xl);
+  padding-top: var(--space-lg);
+}
+
+.detail-main {
+  min-width: 0;
+}
+
+.prose {
+  max-width: var(--width-prose);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+}
+
+.prose > * + * {
+  margin-top: var(--space-sm);
+}
+
+.prose h2 {
+  margin-top: var(--space-xl);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-2xl);
+}
+
+.prose > h2:first-child {
+  margin-top: 0;
+}
+
+.prose h3 {
+  margin-top: var(--space-lg);
+  font-family: var(--font-sans);
+}
+
+.prose p,
+.prose li {
+  color: var(--ink-muted);
+}
+
+.prose a {
+  color: var(--accent);
+}
+
+.prose ul,
+.prose ol {
+  padding-left: var(--space-md);
+}
+
+.prose li + li {
+  margin-top: var(--space-3xs);
+}
+
+.prose code {
+  background: var(--accent-tint);
+  padding: var(--space-3xs);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.detail-rail,
+.about-rail {
+  align-self: start;
+  border: var(--rule-width) solid var(--rule);
+  background: var(--surface);
+  font-family: var(--font-mono);
+}
+
+.detail-rail h2 {
+  border-bottom: var(--rule-width) solid var(--rule);
+  padding: var(--space-2xs) var(--space-xs);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.rail-list > div {
+  padding: var(--space-xs);
+}
+
+.rail-list > div + div {
+  border-top: var(--rule-width) solid var(--rule-subtle);
+}
+
+.rail-topics {
+  padding: 0;
+  color: var(--ink-muted);
+  font-size: var(--text-sm);
+  list-style: none;
+}
+
+.rail-topics li {
+  padding: var(--space-xs);
+}
+
+.rail-topics li + li {
+  border-top: var(--rule-width) solid var(--rule-subtle);
+}
+
+.rail-links {
+  display: grid;
+  border-top: var(--rule-width) solid var(--rule);
+}
+
+.rail-links a {
+  min-height: var(--control-min);
+  padding: var(--space-2xs) var(--space-xs);
+}
+
+.rail-links a + a {
+  border-top: var(--rule-width) solid var(--rule-subtle);
+}
+
+.detail-navigation {
+  display: flex;
+  max-width: var(--width-prose);
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+  margin-top: var(--space-xl);
+  border-top: var(--rule-width) solid var(--rule);
+  padding-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+/*
+  With no article above it, the navigation's own rule would hang under the
+  title block's rule with empty space between the two. The title block already
+  provides the separation, so the back link just sits below it.
+*/
+.detail-main-bare .detail-navigation {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+}
+
+.about-layout {
+  padding-top: 0;
+}
+
+.about-rail {
+  border: 0;
+}
+
+/* Footer */
+
+.site-footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+  margin-top: var(--space-xl);
+  border-top: var(--rule-width) solid var(--rule);
+  padding-block: var(--space-sm);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+}
+
+.footer-email {
+  gap: var(--space-2xs);
+  color: var(--accent);
+}
+
+.footer-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+}
+
+.footer-identity .pixel-icon {
+  color: var(--accent);
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+.footer-nav a {
+  gap: var(--space-2xs);
+}
+
+/* Existing utility patterns */
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-top: var(--space-lg);
+}
+
+.button {
+  display: inline-flex;
+  min-height: var(--control-min);
+  align-items: center;
+  border: var(--rule-width) solid var(--rule);
+  border-radius: 0;
+  padding-inline: var(--space-sm);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--surface);
+}
+
+.button-primary:hover {
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
+  color: var(--surface);
+}
+
+.sr-only {
+  position: absolute;
+  width: var(--rule-width);
+  height: var(--rule-width);
+  overflow: hidden;
+  margin: calc(var(--rule-width) * -1);
+  padding: 0;
+  border: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 64rem) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .header-tools {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .site-nav {
+    justify-content: flex-start;
+  }
+
+  .home-board {
+    grid-template-areas:
+      'intro'
+      'currently'
+      'featured'
+      'projects'
+      'interests';
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .interest-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .interest-strip .index-row + .index-row {
+    border-top: var(--rule-width) solid var(--rule-subtle);
+    border-left: 0;
+  }
+
+  .interest-strip .index-row:nth-child(even) {
+    border-left: var(--rule-width) solid var(--rule-subtle);
+  }
+
+  .interest-strip .index-row:nth-child(2) {
+    border-top: 0;
+  }
+
+  .project-row {
+    grid-template-columns: minmax(10rem, 1fr) minmax(15rem, 2fr) auto;
+  }
+
+  .project-row.index-row-bare {
+    grid-template-columns: minmax(10rem, 1fr) auto;
+  }
+
+  .project-row .metadata-list {
+    grid-column: 1 / -1;
+  }
+
+  /*
+    Below this width the summary and the technology list each take a full-width
+    row of their own, which leaves auto-placement no cell for the arrow on the
+    first row: it lands on a row below them, against the left edge. Placing it
+    explicitly keeps it beside the title and on the right edge at every width.
+  */
+  .index-row .row-arrow {
+    grid-row: 1;
+    grid-column: -2;
+  }
+}
+
+@media (max-width: 48rem) {
+  .wordmark {
+    font-size: var(--text-3xl);
+  }
+
+  .header-tools {
+    align-items: flex-start;
+  }
+
+  .site-nav {
+    gap: var(--space-3xs);
+  }
+
+  .nav-separator {
+    display: none;
+  }
+
+  .nav-link {
+    padding-inline: var(--space-2xs);
+  }
+
+  .project-spec,
+  .featured-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-spec > div + div,
+  .featured-links a + a {
+    border-top: var(--rule-width) solid var(--rule-subtle);
+    border-left: 0;
+  }
+
+  .project-row,
+  .interest-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .row-summary,
+  .project-row .metadata-list {
+    grid-column: 1 / -1;
+  }
+
+  .detail-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .detail-rail,
+  .about-rail {
+    width: 100%;
+  }
+
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-nav {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 30rem) {
+  .site-header {
+    gap: var(--space-xs);
+  }
+
+  .header-tools {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .site-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .nav-link {
+    min-height: var(--control-min);
+    padding-inline: var(--space-3xs);
+  }
+
+  .theme-control {
+    align-self: flex-end;
+  }
+
+  .home-intro {
+    padding-inline: 0;
+  }
+
+  .featured-project h3 {
+    font-size: var(--text-2xl);
+  }
+
+  .interest-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .interest-strip .index-row + .index-row,
+  .interest-strip .index-row:nth-child(even),
+  .interest-strip .index-row:nth-child(2) {
+    border-top: var(--rule-width) solid var(--rule-subtle);
+    border-left: 0;
+  }
+
+  .index-row {
+    gap: var(--space-xs);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
