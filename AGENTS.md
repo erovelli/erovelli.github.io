@@ -23,11 +23,12 @@ Node version comes from `.node-version` and nothing else. CI, deploy and
 ## Where things live
 
 ```
-site.config.json          identity: name, role, location, email, socials, resumeUrl
-src/config.ts             types site.config.json, derives title/mailto, nav order
+site.config.json          identity: name, role, location, email, socials, profiles
+src/config.ts             types site.config.json, derives title/mailto/sameAs, nav order
+src/schema.ts             every JSON-LD node, built from config and collections
 src/styles/global.css     design tokens and every shared style
-src/layouts/BaseLayout    <head>, meta, social cards, skip link, shell
-src/components/           Header, Footer, PageIntro, ProjectCard, InterestCard
+src/layouts/BaseLayout    <head>, meta, social cards, JSON-LD, skip link, shell
+src/components/           Header, Footer, PageIntro, Breadcrumbs, ProjectCard, InterestCard
 src/content/              projects/ and interests/ as Markdown
 src/content.config.ts     Zod schemas for both collections
 src/pages/                routes, plus robots.txt.ts and manifest.json.ts
@@ -69,6 +70,22 @@ numbers depend on which page you are looking at.
 reason: an `h2` section heading followed by `h2` card titles is a flat outline.
 `check-build.mjs` fails the build if levels skip.
 
+**No résumé.** Not a PDF, not an HTML `/resume/` route, not a download button.
+This is a settled decision, not an absent one — `/about/` and the project pages
+are what this site says about Evan's work. Do not add a `resumeUrl` back to
+`site.config.json`.
+
+**Every route needs its own description.** `BaseLayout` falls back to the
+site-wide description when a page passes none, which is a convenience that
+silently produces a dozen pages competing for one search result. The build gate
+fails on duplicates, so the fallback is really only for the homepage.
+
+**Structured data may not outrun the page.** Everything `src/schema.ts` asserts
+is also stated in rendered copy — `knowsAbout` has a matching sentence on
+`/about/`, `alumniOf` matches the Background paragraph. Schema that disagrees
+with the visible page is worse than no schema, so if you add a property, add
+the copy that backs it.
+
 ## Adding a project or interest
 
 Create a Markdown file in `src/content/projects/` or `src/content/interests/`.
@@ -77,6 +94,18 @@ schema in `src/content.config.ts` validates it at build time.
 
 `order` controls sort position. For projects, `featured: true` puts it on the
 homepage — there is no cap, so the homepage shows exactly the featured set.
+
+`summary` is not optional in practice: it is the page's meta description, and
+the build fails if two pages share one. Keep it under 160 characters.
+
+Projects carry four fields that exist only for structured data. `languages` is
+the machine-readable subset of `technologies`, which mixes languages with
+runtimes and APIs and so cannot be handed to schema.org as-is. `schemaType`
+defaults to `CreativeWork`; claim `SoftwareApplication` only for something a
+visitor can install or run, and give it an `applicationCategory`. `related`
+lists interest slugs, and the project page throws at build time on a slug that
+does not exist. The interest → project direction is the inverse of that list,
+computed at build, so the mapping is declared exactly once.
 
 ## Regenerating brand assets
 
@@ -99,10 +128,13 @@ explicit kerning instead.
 ## What the build gate actually checks
 
 `scripts/check-build.mjs` walks `dist/` and fails on: dead internal links,
-missing or overlong meta descriptions, missing canonical, missing favicon,
-missing Open Graph tags, an `og:image` that does not resolve to a real file,
-`<img>` without `alt`, `target="_blank"` without `noopener`/`noreferrer`,
-heading levels that skip, more or fewer than one `h1`, and visible
+missing or overlong meta descriptions, a description shared by two pages, a
+missing or wrong `author`, missing canonical, a canonical that does not match
+the page's own URL, missing favicon, missing Open Graph tags, an `og:image`
+that does not resolve to a real file, JSON-LD that does not parse or is missing
+`@context`/`@type`, a page with no `Person` node, `<img>` without `alt`,
+`target="_blank"` without `noopener`/`noreferrer`, heading levels that skip,
+more or fewer than one `h1`, and visible
 `TODO`/`FIXME`/`PLACEHOLDER`/`Lorem ipsum`.
 
 Every one of those defects existed in the first version of this site and passed
@@ -117,8 +149,13 @@ frontmatter fences or `.astro` comments do not ship to the browser and are fine.
 These are deliberately absent rather than invented. Do not fill them in with
 plausible-sounding guesses:
 
-- **Résumé.** Drop a PDF at `public/resume.pdf` and set `resumeUrl` in
-  `site.config.json`. The buttons on `/` and `/about/` appear automatically.
+- **Project write-ups.** Every entry in `src/content/projects/` is frontmatter
+  with no body, so each detail page renders a title, a summary and a metadata
+  rail. This is the single largest thing holding the site back in search: the
+  structural work is done, and prose is what remains. What the problem was,
+  what the approach was, what broke. An agent cannot supply this and should not
+  try — a plausible-sounding account of a project you actually built is worse
+  than the empty page it replaced.
 - **Employment dates and titles.** `/about/` currently says only "at Fidelity".
 - **Education specifics.** Only "computer engineering at UMass Amherst" is
   stated, which is what the ModuLoop entry already implied.

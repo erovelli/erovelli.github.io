@@ -1,6 +1,5 @@
 ---
-import type { PixelIconName } from '../icon-types';
-import PixelIcon from './PixelIcon.astro';
+import { pixelIconSource, type PixelIconName } from '../icons';
 
 interface Row {
   label: string;
@@ -15,13 +14,14 @@ interface Props {
 const { rows } = Astro.props;
 ---
 
+{
+  /* Each row's icon is drawn by `.metadata-row::before`, not a child element:
+    inside a <dl>, a <div> wrapper may contain only <dt> and <dd>. */
+}
 <dl class="metadata-rows">
   {
     rows.map((row) => (
-      <div class="metadata-row">
-        <span class="metadata-icon">
-          <PixelIcon name={row.icon} />
-        </span>
+      <div class="metadata-row" style={pixelIconSource(row.icon)}>
         <dt>{row.label}</dt>
         <dd>{row.value}</dd>
       </div>

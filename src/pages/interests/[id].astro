@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../../schema';
 
 export async function getStaticPaths() {
   const interests = await getCollection('interests');
@@ -19,9 +21,28 @@ const { interest } = Astro.props;
 const { Content } = await render(interest);
 const hasBody = Boolean(interest.body?.trim());
 const { title, summary, topics } = interest.data;
+
+/* The project → interest mapping is declared once, in project frontmatter.
+   This is its inverse, so the two directions cannot drift apart. */
+const relatedProjects = (await getCollection('projects'))
+  .filter((project) => project.data.related.includes(interest.id))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const trail = [
+  { label: 'Home', href: '/' },
+  { label: 'Interests', href: '/interests/' },
+];
+const schemas = [
+  breadcrumbSchema([
+    ...trail,
+    { label: title, href: `/interests/${interest.id}/` },
+  ]),
+];
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout title={title} description={summary} schemas={schemas}>
+  <Breadcrumbs trail={trail} current={title} />
+
   <header class="detail-intro">
     <p class="eyebrow">Interest / {topics.join(' / ')}</p>
     <h1>{title}</h1>
@@ -50,6 +71,17 @@ const { title, summary, topics } = interest.data;
           {topics.map((topic) => <li>{topic}</li>)}
         </ul>
       </section>
+
+      {
+        relatedProjects.length > 0 && (
+          <nav class="rail-links" aria-label="Projects filed under this">
+            {relatedProjects.map((project) => (
+              <a href={`/projects/${project.id}/`}>{project.data.title} →</a>
+            ))}
+          </nav>
+        )
+      }
+
       <nav class="rail-links" aria-label="Related pages">
         <a href="/interests/">Interest index →</a>
         <a href="/projects/">Project index →</a>

@@ -1,10 +1,12 @@
 ---
 import { getCollection, render } from 'astro:content';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Module from '../components/Module.astro';
 import NowPanel from '../components/NowPanel.astro';
 import PageIntro from '../components/PageIntro.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config';
+import { breadcrumbSchema } from '../schema';
 
 /*
   Every claim on this page is one already asserted elsewhere in this repo.
@@ -24,32 +26,53 @@ if (!now) {
 }
 
 const { Content: NowContent } = await render(now);
+
+const trail = [{ label: 'Home', href: '/' }];
+const schemas = [
+  breadcrumbSchema([...trail, { label: 'About', href: '/about/' }]),
+];
+
+/* Rendered as a sentence rather than a list of tags: the same claim the Person
+   schema makes in `knowsAbout`, in a form a person would actually read. The
+   config supplies mid-sentence casing, so these strings go in verbatim. */
+const subjects = [
+  site.knowsAbout.slice(0, -1).join(', '),
+  site.knowsAbout.at(-1),
+].join(', and ');
 ---
 
 <BaseLayout
   title="About"
-  description={`About ${site.name}, a software engineer in ${site.location}.`}
+  description={`About ${site.name}, a ${site.role.toLowerCase()} in ${site.location}. Local-first tools, systems work, and embedded hardware.`}
+  schemas={schemas}
 >
+  <Breadcrumbs trail={trail} current="About" />
+
   <PageIntro
     eyebrow="About"
     title="About"
-    lead={`Software engineer in ${site.location}. Computer engineering by training, full-stack by trade, systems and local-first tools by preference.`}
+    lead={`I’m ${site.name}, a ${site.role.toLowerCase()} in ${site.location}. Computer engineering by training, full-stack by trade, systems and local-first tools by preference.`}
   />
 
   <div class="detail-layout about-layout">
     <article class="detail-main">
       <div class="prose">
+        <p>
+          I work mostly on {subjects}. The through-line is software that keeps
+          its data close and can explain what it did.
+        </p>
+
         <h2>Now</h2>
         <NowContent />
 
         <h2>Background</h2>
         <p>
-          I studied computer engineering at UMass Amherst. My senior design
-          project was <a href="/projects/moduloop/">ModuLoop</a>, a hardware
-          music sequencer built by four of us; I led the software architecture,
-          which meant learning the hard way how embedded timing, storage latency
-          and audio scheduling interact. Hardware is still the fastest way I
-          know to be corrected by reality.
+          I studied computer engineering at the {site.alumniOf}. My senior
+          design project was <a href="/projects/moduloop/">ModuLoop</a>, a
+          hardware music sequencer built by four of us; I led the software
+          architecture, which meant learning the hard way how embedded timing,
+          storage latency and audio scheduling interact. Hardware is still the
+          fastest way I know to be corrected by reality.
         </p>
 
         <h2>Elsewhere</h2>
@@ -65,7 +88,6 @@ const { Content: NowContent } = await render(now);
 
       <nav class="detail-navigation" aria-label="About page links">
         <a href={site.mailto}>Email me →</a>
-        {site.resumeUrl && <a href={site.resumeUrl}>Download résumé ↓</a>}
         <a href="/projects/">See the work →</a>
       </nav>
     </article>

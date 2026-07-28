@@ -117,7 +117,120 @@ function resolveTarget(href, pageFile) {
   return [path.join(target, 'index.html'), `${target}.html`];
 }
 
+/* --------------------------------------------------------------- canonical --- */
+
+/**
+ * The URL a page should name as its own canonical, derived from where it landed
+ * in dist. A canonical pointing anywhere else tells search engines to index a
+ * different page than the one they fetched.
+ *
+ * Returns null for routes that are not directory-style, i.e. the 404, which is
+ * served for arbitrary paths and so has no single URL of its own.
+ */
+function expectedCanonical(file) {
+  const rel = path.relative(dist, file).split(path.sep).join('/');
+  if (!rel.endsWith('index.html')) return null;
+  return `${site.url}/${rel.slice(0, -'index.html'.length)}`;
+}
+
+/* ----------------------------------------------------------------- markup --- */
+
+/** Elements that never have a closing tag, so they never open a nesting level. */
+const VOID_ELEMENTS = new Set([
+  'area',
+  'base',
+  'br',
+  'col',
+  'embed',
+  'hr',
+  'img',
+  'input',
+  'link',
+  'meta',
+  'source',
+  'track',
+  'wbr',
+]);
+
+/** Tag names of the direct children of a fragment of HTML. */
+function directChildren(inner) {
+  const names = [];
+  let depth = 0;
+
+  for (const [, closing, name, rest] of inner.matchAll(
+    /<(\/?)([a-z0-9-]+)\b([^>]*)>/gi,
+  )) {
+    const tag = name.toLowerCase();
+    if (closing) {
+      depth = Math.max(0, depth - 1);
+      continue;
+    }
+    if (depth === 0) names.push(tag);
+    if (!VOID_ELEMENTS.has(tag) && !rest.trimEnd().endsWith('/')) depth += 1;
+  }
+
+  return names;
+}
+
+/**
+ * A `<dl>` may contain only `<dt>`, `<dd>`, `<div>`, `<script>` and
+ * `<template>`, and a `<div>` used as a wrapper may contain only `<dt>` and
+ * `<dd>`. Putting anything else in one — a decorative icon, say — produces a
+ * description list that assistive technology cannot pair up, which is what
+ * Lighthouse's `definition-list` audit reports. Draw it with CSS instead.
+ */
+function checkDefinitionLists(html, rel) {
+  for (const [, attributes, inner] of html.matchAll(
+    /<dl\b([^>]*)>([\s\S]*?)<\/dl>/gi,
+  )) {
+    const label = attr(`<dl${attributes}>`, 'class') ?? '(no class)';
+
+    for (const child of directChildren(inner)) {
+      if (!['dt', 'dd', 'div', 'script', 'template'].includes(child)) {
+        fail(rel, `<dl class="${label}"> has a <${child}> child`);
+      }
+    }
+
+    for (const [, wrapper] of inner.matchAll(
+      /<div\b[^>]*>([\s\S]*?)<\/div>/gi,
+    )) {
+      for (const child of directChildren(wrapper)) {
+        if (!['dt', 'dd'].includes(child)) {
+          fail(
+            rel,
+            `<dl class="${label}"> has a <div> wrapping a <${child}>, which must be only <dt>/<dd>`,
+          );
+        }
+      }
+    }
+  }
+}
+
+/* -------------------------------------------------------------- structured --- */
+
+/** Every JSON-LD block on the page, parsed. Unparseable blocks are reported. */
+function structuredData(html, rel) {
+  const blocks = [
+    ...html.matchAll(
+      /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+    ),
+  ];
+
+  const parsed = [];
+  for (const [, body] of blocks) {
+    try {
+      parsed.push(JSON.parse(body));
+    } catch (error) {
+      fail(rel, `JSON-LD block does not parse: ${error.message}`);
+    }
+  }
+  return parsed;
+}
+
 /* ------------------------------------------------------------------ pages --- */
+
+/** description -> pages using it, for the duplicate check after the walk. */
+const descriptions = new Map();
 
 async function checkPage(file, html) {
   const rel = path.relative(dist, file);
@@ -134,17 +247,50 @@ async function checkPage(file, html) {
       rel,
       `meta description is ${description.length} chars, over the ${DESCRIPTION_MAX} limit`,
     );
+  } else {
+    descriptions.set(description, [
+      ...(descriptions.get(description) ?? []),
+      rel,
+    ]);
+  }
+
+  if (meta(html, 'author') !== site.name) {
+    fail(rel, `meta author should be "${site.name}"`);
   }
 
   if (!/<html[^>]*\blang\s*=/i.test(html)) fail(rel, 'missing <html lang>');
 
   const [canonical] = links(html, 'canonical');
+  const expected = expectedCanonical(file);
   if (!canonical) fail(rel, 'missing rel=canonical');
   else if (!canonical.startsWith(site.url)) {
     fail(rel, `canonical does not point at ${site.url}: ${canonical}`);
+  } else if (expected && canonical !== expected) {
+    fail(rel, `canonical is ${canonical}, should be ${expected}`);
   }
 
   if (links(html, 'icon').length === 0) fail(rel, 'no favicon link');
+
+  /* --- structured data --- */
+
+  const schemas = structuredData(html, rel);
+  if (schemas.length === 0) fail(rel, 'no JSON-LD structured data');
+
+  for (const schema of schemas) {
+    if (schema['@context'] !== 'https://schema.org') {
+      fail(
+        rel,
+        `JSON-LD block missing @context: ${JSON.stringify(schema['@type'] ?? schema)}`,
+      );
+    }
+    if (!schema['@type']) fail(rel, 'JSON-LD block missing @type');
+  }
+
+  // The Person node is what merges the scattered profiles into one entity, so
+  // every page carries it. Losing it site-wide is the expensive kind of typo.
+  if (!schemas.some((schema) => schema['@type'] === 'Person')) {
+    fail(rel, 'no Person JSON-LD');
+  }
 
   /* --- social preview: the reason a pasted link renders as a blank card --- */
 
@@ -179,6 +325,10 @@ async function checkPage(file, html) {
       fail(rel, `heading order jumps from h${previous} to h${level}`);
     }
   });
+
+  /* --- markup that assistive technology has to be able to parse --- */
+
+  checkDefinitionLists(html, rel);
 
   /* --- images --- */
 
@@ -279,6 +429,17 @@ async function main() {
 
   for (const page of pages) {
     await checkPage(page, await readFile(page, 'utf8'));
+  }
+
+  /* Two pages sharing a description are two pages competing for one result.
+     It is the default failure mode of a layout that supplies a fallback. */
+  for (const [description, users] of descriptions) {
+    if (users.length > 1) {
+      fail(
+        users[0],
+        `meta description is shared with ${users.slice(1).join(', ')}: "${description}"`,
+      );
+    }
   }
 
   if (problems.length > 0) {

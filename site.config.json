@@ -8,17 +8,31 @@
   "location": "Cambridge, Massachusetts",
   "locationShort": "Cambridge, MA",
   "email": "evan.rovelli@gmail.com",
-  "resumeUrl": null,
+  "addressLocality": "Cambridge",
+  "addressRegion": "MA",
+  "addressCountry": "US",
+  "alumniOf": "University of Massachusetts Amherst",
+  "knowsAbout": [
+    "Rust",
+    "WebAssembly",
+    "local-first software",
+    "embedded systems",
+    "data visualisation"
+  ],
   "socials": [
     {
       "label": "GitHub",
       "href": "https://github.com/erovelli",
-      "handle": "@erovelli"
+      "handle": "@erovelli",
+      "me": true
     },
     {
       "label": "LinkedIn",
       "href": "https://www.linkedin.com/in/erovelli",
       "handle": "/in/erovelli"
     }
+  ],
+  "profiles": [
+    "https://chromewebstore.google.com/detail/outdegree/kjmjfehjgbcgibkbekgacfgibfmglmod"
   ]
 }

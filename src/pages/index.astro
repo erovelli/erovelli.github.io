@@ -6,6 +6,7 @@ import NowPanel from '../components/NowPanel.astro';
 import ProjectRow from '../components/ProjectRow.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../config';
+import { websiteSchema } from '../schema';
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
@@ -23,10 +24,21 @@ if (!outdegree || !now) {
 }
 ---
 
-<BaseLayout>
+<BaseLayout schemas={[websiteSchema]}>
   <div class="home-board">
     <section class="home-intro" aria-labelledby="intro-title">
-      <h1 id="intro-title">I’m Evan. I’m a software engineer.</h1>
+      {
+        /* The full name on its own is deliberate: this h1 is the site's
+          strongest on-page match for the query it most needs to win, and
+          nothing should dilute it. The role rides alongside as a kicker. */
+      }
+      <h1 id="intro-title">
+        {site.name}
+        <span class="intro-role">
+          <span class="intro-role-separator" aria-hidden="true">/</span>
+          {site.role}
+        </span>
+      </h1>
       <p>
         I’m a computer engineer by training and a software engineer by trade,
         based in {site.location}. At Fidelity I work on batch platforms and
@@ -36,13 +48,6 @@ if (!outdegree || !now) {
       <nav class="intro-links" aria-label="Introduction">
         <a href="/projects/">View projects <span aria-hidden="true">→</span></a>
         <a href="/about/">About me <span aria-hidden="true">→</span></a>
-        {
-          site.resumeUrl && (
-            <a href={site.resumeUrl}>
-              Résumé <span aria-hidden="true">↓</span>
-            </a>
-          )
-        }
       </nav>
     </section>
 

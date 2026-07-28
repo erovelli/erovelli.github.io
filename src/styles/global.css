@@ -112,6 +112,7 @@
   --icon-size: 1.5rem;
   --icon-size-lg: 2rem;
   --icon-cell: 3.5rem;
+  --monogram-size: 2.5rem;
   --transition-fast: 140ms;
 }
 
@@ -306,14 +307,35 @@ main {
   padding-block: var(--space-sm);
 }
 
+/*
+  The header identifies the site; the landing page h1 identifies the person.
+  Those are different jobs, and running the full name at --text-4xl in both
+  places made the header compete with the page it sits above.
+*/
 .wordmark {
+  display: flex;
+  align-items: center;
   flex: none;
+  gap: var(--space-xs);
   color: var(--ink);
-  font-size: var(--text-4xl);
-  font-weight: 700;
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-tight);
   text-decoration: none;
+}
+
+.wordmark-monogram {
+  display: grid;
+  place-items: center;
+  width: var(--monogram-size);
+  height: var(--monogram-size);
+  border: var(--rule-width) solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: var(--tracking-label);
+}
+
+.wordmark-domain {
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
 }
 
 .header-tools {
@@ -449,11 +471,28 @@ main {
 
 .home-intro h1 {
   max-width: var(--width-lead);
-  font-family: var(--font-serif);
-  font-size: var(--text-3xl);
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+/* Kicker rather than a second heading: the role is metadata about the name,
+   and an h2 here would put "Software engineer" in the document outline. */
+.intro-role {
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
   font-weight: 400;
-  letter-spacing: normal;
-  line-height: var(--leading-copy);
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Astro drops the whitespace-only node between the name and this span, so the
+   gap on either side of the slash is padding rather than a space character. */
+.intro-role-separator {
+  padding-inline: var(--space-2xs);
 }
 
 .home-intro > p {
@@ -516,7 +555,7 @@ main {
     grid-template-columns: var(--icon-cell) minmax(0, 1fr);
   }
 
-  .metadata-icon {
+  .metadata-row::before {
     grid-row: 1 / 3;
   }
 
@@ -540,12 +579,21 @@ main {
   padding: var(--space-xs);
 }
 
-.metadata-icon {
-  display: grid;
-  align-items: center;
-  justify-content: center;
+/*
+  The icon cell, drawn rather than marked up — see NowPanel. The element
+  stretches to fill the grid cell so its right rule lands on the cell edge,
+  while the mask is sized explicitly so the glyph stays at --icon-size and
+  centred instead of stretching with it.
+*/
+.metadata-row::before {
+  content: '';
   border-right: var(--rule-width) solid var(--rule-subtle);
-  color: var(--accent);
+  background-color: var(--accent);
+  image-rendering: pixelated;
+  -webkit-mask: var(--pixel-icon-source) center / var(--icon-size)
+    var(--icon-size) no-repeat;
+  mask: var(--pixel-icon-source) center / var(--icon-size) var(--icon-size)
+    no-repeat;
 }
 
 .metadata-row dt {
@@ -846,6 +894,39 @@ main {
 .detail-intro {
   max-width: var(--width-lead);
   padding-block: var(--space-xl) var(--space-lg);
+}
+
+/* Breadcrumbs sit above the intro and share the eyebrow's register, so a
+   detail page reads as one label line rather than two competing ones. */
+.breadcrumbs {
+  padding-top: var(--space-lg);
+}
+
+.breadcrumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  letter-spacing: var(--tracking-label);
+}
+
+.breadcrumbs li {
+  display: flex;
+  gap: var(--space-2xs);
+}
+
+.breadcrumb-separator {
+  color: var(--rule);
+}
+
+.breadcrumbs + .page-intro,
+.breadcrumbs + .detail-intro {
+  padding-top: var(--space-md);
 }
 
 .eyebrow {
@@ -1194,8 +1275,8 @@ main {
 }
 
 @media (max-width: 48rem) {
-  .wordmark {
-    font-size: var(--text-3xl);
+  .wordmark-domain {
+    font-size: var(--text-base);
   }
 
   .header-tools {

@@ -1,19 +1,29 @@
 ---
 import { getCollection } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import Module from '../../components/Module.astro';
 import PageIntro from '../../components/PageIntro.astro';
 import ProjectRow from '../../components/ProjectRow.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../../schema';
 
 const projects = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+const trail = [{ label: 'Home', href: '/' }];
+const schemas = [
+  breadcrumbSchema([...trail, { label: 'Projects', href: '/projects/' }]),
+];
 ---
 
 <BaseLayout
   title="Projects"
   description="Local-first tools, data products, browser utilities, and embedded hardware built by Evan Rovelli."
+  schemas={schemas}
 >
+  <Breadcrumbs trail={trail} current="Projects" />
+
   <PageIntro
     eyebrow="Work"
     title="Projects"

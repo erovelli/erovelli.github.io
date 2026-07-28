@@ -18,6 +18,21 @@ const projects = defineCollection({
     repository: z.url().optional(),
     live: z.url().optional(),
     liveLabel: z.string().default('Live site'),
+    /* --- structured data ---
+       `technologies` is prose for humans and mixes languages with runtimes and
+       APIs, so it cannot be handed to schema.org as `programmingLanguage`.
+       `languages` is the machine-readable subset. */
+    languages: z.array(z.string()).default([]),
+    /* CreativeWork by default: only claim SoftwareApplication for something a
+       visitor can actually install or run. */
+    schemaType: z
+      .enum(['SoftwareApplication', 'CreativeWork'])
+      .default('CreativeWork'),
+    applicationCategory: z.string().optional(),
+    operatingSystem: z.string().optional(),
+    /* Interest slugs. Validated against the collection at build time by the
+       pages that render them, because Zod cannot see sibling collections. */
+    related: z.array(z.string()).default([]),
   }),
 });
 

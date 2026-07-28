@@ -19,7 +19,11 @@ const year = new Date().getFullYear();
   <nav class="footer-nav" aria-label="Contact and social">
     {
       site.socials.map((social) => (
-        <a href={social.href} rel="me noreferrer" target="_blank">
+        <a
+          href={social.href}
+          rel={social.me ? 'me noreferrer' : 'noreferrer'}
+          target="_blank"
+        >
           {social.label === 'GitHub' && <BrandIcon name="github" />}
           {social.label}
           <span class="sr-only">(opens in a new tab)</span>

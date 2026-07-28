@@ -2,6 +2,7 @@
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { site } from '../config';
+import { personSchema } from '../schema';
 import '../styles/global.css';
 
 interface Props {
@@ -11,6 +12,11 @@ interface Props {
   canonicalPath?: string;
   /** Set on pages that must stay out of the index, e.g. the 404. */
   noindex?: boolean;
+  /**
+   * Extra JSON-LD for this route. The Person node is emitted site-wide with a
+   * stable `@id`; anything page-specific references it rather than repeating it.
+   */
+  schemas?: readonly object[];
 }
 
 const {
@@ -18,25 +24,12 @@ const {
   description = site.description,
   canonicalPath = Astro.url.pathname,
   noindex = false,
+  schemas = [],
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : site.title;
 const canonical = new URL(canonicalPath, site.url);
 const ogImage = new URL('/og.png', site.url);
-
-const personSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Person',
-  name: site.name,
-  url: site.url,
-  jobTitle: site.role,
-  email: site.email,
-  homeLocation: {
-    '@type': 'Place',
-    name: site.location,
-  },
-  sameAs: site.socials.map((social) => social.href),
-};
 ---
 
 <!doctype html>
@@ -68,6 +61,7 @@ const personSchema = {
     </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
 
     <meta
       name="theme-color"
@@ -135,6 +129,15 @@ const personSchema = {
       is:inline
       set:html={JSON.stringify(personSchema)}
     />
+    {
+      schemas.map((schema) => (
+        <script
+          type="application/ld+json"
+          is:inline
+          set:html={JSON.stringify(schema)}
+        />
+      ))
+    }
   </head>
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>

@@ -1,28 +1,5 @@
 ---
-import bookOpen from '../assets/icons/pixelarticons/book-open-sharp.svg?url';
-import chart from '../assets/icons/pixelarticons/chart-sharp.svg?url';
-import computer from '../assets/icons/pixelarticons/computer-sharp.svg?url';
-import fileText from '../assets/icons/pixelarticons/file-text-sharp.svg?url';
-import gitBranch from '../assets/icons/pixelarticons/git-branch-sharp.svg?url';
-import keyboardMusic from '../assets/icons/pixelarticons/keyboard-music-sharp.svg?url';
-import mail from '../assets/icons/pixelarticons/mail-sharp.svg?url';
-import smile from '../assets/icons/pixelarticons/smile-sharp.svg?url';
-import terminal from '../assets/icons/pixelarticons/terminal-sharp.svg?url';
-import toolCase from '../assets/icons/pixelarticons/tool-case-sharp.svg?url';
-import type { PixelIconName } from '../icon-types';
-
-const icons = {
-  'book-open': bookOpen,
-  chart,
-  computer,
-  'file-text': fileText,
-  'git-branch': gitBranch,
-  'keyboard-music': keyboardMusic,
-  mail,
-  smile,
-  terminal,
-  'tool-case': toolCase,
-} as const;
+import { pixelIconSource, type PixelIconName } from '../icons';
 
 interface Props {
   name: PixelIconName;
@@ -30,10 +7,9 @@ interface Props {
 }
 
 const { name, class: className } = Astro.props;
-const source = icons[name];
 ---
 
 <span
   class:list={['pixel-icon', className]}
-  style={`--pixel-icon-source: url("${source}")`}
+  style={pixelIconSource(name)}
   aria-hidden="true"></span>

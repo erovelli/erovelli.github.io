@@ -1,0 +1,28 @@
+---
+import type { Crumb } from '../schema';
+
+interface Props {
+  /** Ancestors only, nearest last. The current page is appended as plain text. */
+  trail: readonly Crumb[];
+  current: string;
+}
+
+const { trail, current } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    {
+      trail.map((crumb) => (
+        <li>
+          <a href={crumb.href}>{crumb.label}</a>
+          <span class="breadcrumb-separator" aria-hidden="true">
+            /
+          </span>
+        </li>
+      ))
+    }
+    {/* The current page is not a link: there is nowhere for it to go. */}
+    <li aria-current="page">{current}</li>
+  </ol>
+</nav>

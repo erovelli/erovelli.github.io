@@ -1,6 +1,8 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbSchema, projectSchema } from '../../schema';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -29,10 +31,40 @@ const {
   repository,
   live,
   liveLabel,
+  related,
 } = project.data;
+
+/* `related` is a list of interest slugs, which Zod cannot check because it
+   cannot see a sibling collection. A typo would otherwise ship as a dead link
+   that check-build.mjs catches only after a full build, so resolve it here and
+   fail the build at the point the mistake was made. */
+const interests = await getCollection('interests');
+const relatedInterests = related.map((id) => {
+  const interest = interests.find((entry) => entry.id === id);
+  if (!interest) {
+    throw new Error(
+      `Project "${project.id}" lists related interest "${id}", which does not exist.`,
+    );
+  }
+  return interest;
+});
+
+const trail = [
+  { label: 'Home', href: '/' },
+  { label: 'Projects', href: '/projects/' },
+];
+const schemas = [
+  projectSchema(project),
+  breadcrumbSchema([
+    ...trail,
+    { label: title, href: `/projects/${project.id}/` },
+  ]),
+];
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout title={title} description={summary} schemas={schemas}>
+  <Breadcrumbs trail={trail} current={title} />
+
   <header class="detail-intro">
     <p class="eyebrow">Project / {status} / {year}</p>
     <h1>{title}</h1>
@@ -72,6 +104,16 @@ const {
           </div>
         </dl>
       </section>
+
+      {
+        relatedInterests.length > 0 && (
+          <nav class="rail-links" aria-label="Related interests">
+            {relatedInterests.map((interest) => (
+              <a href={`/interests/${interest.id}/`}>{interest.data.title} →</a>
+            ))}
+          </nav>
+        )
+      }
 
       {
         (repository || live) && (
