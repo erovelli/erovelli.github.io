@@ -53,6 +53,13 @@ const palette = {
   accent: '#a8341c',
 };
 
+/** Mirrors the light-theme header monogram in src/styles/global.css. */
+const iconPalette = {
+  canvas: '#f3f0e6',
+  ink: '#151a16',
+  rule: '#283229',
+};
+
 const ICON_SIZES = [
   { file: 'favicon-32.png', size: 32 },
   { file: 'favicon-192.png', size: 192 },
@@ -135,13 +142,9 @@ function line(font, text, x, baseline, size, tracking = 0) {
 /** The mark, as inline SVG geometry. Mirrors tools/icon.svg. */
 function mark(x, y) {
   return `<g transform="translate(${x}, ${y})">
-    <rect width="64" height="64" rx="14" fill="${palette.ink}" />
-    <g fill="${palette.paper}">
-      <rect x="18" y="16" width="8" height="32" />
-      <rect x="18" y="16" width="28" height="8" />
-      <rect x="18" y="40" width="28" height="8" />
-    </g>
-    <rect x="18" y="28" width="20" height="8" fill="${palette.accent}" />
+    <rect width="64" height="64" fill="${iconPalette.canvas}" />
+    <rect x="2" y="2" width="60" height="60" fill="none" stroke="${iconPalette.rule}" stroke-width="2" />
+    <path fill="${iconPalette.ink}" stroke="${iconPalette.ink}" stroke-linejoin="round" stroke-width="1.1" d="M20.42 39H28.54V40.45H18.82V23.54H28.54V24.99H20.42V31.08H28.11V32.5H20.42ZM38.52 24.97H34.69V32.09H38.4Q40.29 32.09 41.29 31.18Q42.29 30.27 42.29 28.56Q42.29 26.83 41.31 25.9Q40.34 24.97 38.52 24.97ZM42.34 40.45L39.13 33.48H34.69V40.45H33.12V23.54H38.62Q41.04 23.54 42.46 24.88Q43.89 26.21 43.89 28.49Q43.89 30.15 43.01 31.41Q42.14 32.67 40.68 33.11L44.14 40.45Z" />
   </g>`;
 }
 
@@ -184,11 +187,11 @@ async function writeIcons(iconSvg) {
     process.stdout.write(`  public/${file}\n`);
   }
 
-  // Flatten onto the mark's own background so iOS does not halo the rounded
-  // corners against white.
+  // Flatten onto the light canvas so iOS does not introduce a contrasting edge
+  // when it applies its own icon mask.
   await sharp(iconSvg)
     .resize(APPLE_TOUCH_SIZE, APPLE_TOUCH_SIZE)
-    .flatten({ background: palette.ink })
+    .flatten({ background: iconPalette.canvas })
     .png({ compressionLevel: 9 })
     .toFile(path.join(publicDir, 'apple-touch-icon.png'));
   process.stdout.write('  public/apple-touch-icon.png\n');
