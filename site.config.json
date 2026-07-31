@@ -25,12 +25,14 @@
       "label": "GitHub",
       "href": "https://github.com/erovelli",
       "handle": "@erovelli",
+      "icon": "github",
       "me": true
     },
     {
       "label": "LinkedIn",
       "href": "https://www.linkedin.com/in/erovelli",
-      "handle": "/in/erovelli"
+      "handle": "/in/erovelli",
+      "icon": "linkedin"
     }
   ],
   "profiles": [

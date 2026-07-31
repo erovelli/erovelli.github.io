@@ -1,14 +1,13 @@
 ---
-import github from '../assets/icons/simple-icons/github.svg?url';
+import { brandIcons, type BrandIconName } from '../icons';
 
 interface Props {
-  name: 'github';
+  name: BrandIconName;
   class?: string;
 }
 
-const icons = { github } as const;
 const { name, class: className } = Astro.props;
-const source = icons[name];
+const source = brandIcons[name];
 ---
 
 <span

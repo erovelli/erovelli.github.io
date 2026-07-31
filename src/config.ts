@@ -7,11 +7,14 @@
  * role or URL — if a string of biography appears in a component, it belongs here.
  */
 import identity from '../site.config.json';
+import { brandIcons, type BrandIconName } from './icons';
 
 export interface Social {
   label: string;
   href: string;
   handle: string;
+  /** Brand mark for this profile. See `src/assets/icons/brands/README.md`. */
+  icon: BrandIconName;
   /**
    * Emit `rel="me"` on links to this profile, claiming it as the same identity.
    *
@@ -68,7 +71,27 @@ export interface SiteIdentity {
   profiles: string[];
 }
 
-const base: SiteIdentity = identity;
+/*
+  A JSON import widens every string to `string`, so `icon` arrives untyped and
+  a typo would survive to runtime as a `url("undefined")` mask — an icon-shaped
+  hole, on every page, that nothing else would catch. Narrowing it here turns
+  that into a build failure naming the offending value.
+*/
+const toSocial = (social: (typeof identity.socials)[number]): Social => {
+  if (!(social.icon in brandIcons)) {
+    throw new Error(
+      `site.config.json: ${social.label} has icon "${social.icon}", which is not in ` +
+        `src/assets/icons/brands (${Object.keys(brandIcons).join(', ')}).`,
+    );
+  }
+
+  return { ...social, icon: social.icon as BrandIconName };
+};
+
+const base: SiteIdentity = {
+  ...identity,
+  socials: identity.socials.map(toSocial),
+};
 
 export const site = {
   ...base,

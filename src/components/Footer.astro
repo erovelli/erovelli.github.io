@@ -29,7 +29,7 @@ const year = new Date().getFullYear();
           rel={social.me ? 'me noreferrer' : 'noreferrer'}
           target="_blank"
         >
-          {social.label === 'GitHub' && <BrandIcon name="github" />}
+          <BrandIcon name={social.icon} />
           {social.label} {social.handle}
           <span class="sr-only">(opens in a new tab)</span>
         </a>

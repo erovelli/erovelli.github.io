@@ -1,13 +1,30 @@
 /**
- * The pixelarticons set, as URLs.
+ * Icon registries, as URLs.
  *
- * Kept in a module rather than inside `PixelIcon.astro` because two callers
- * need it: the component, which renders a masked `<span>`, and `NowPanel`,
- * which sets the same custom property on a `::before` so the icon is not a
- * child node. A `<dl>` may only contain `<dt>`, `<dd>` and `<div>` wrappers,
- * and a wrapper may only contain `<dt>` and `<dd>` — so a decorative icon
- * inside one has to be drawn by CSS, not markup.
+ * Both sets are masked rather than inlined — see `.brand-icon` and
+ * `.pixel-icon` — so a caller only ever needs the file's URL.
+ *
+ * The pixelarticons map lives here rather than inside `PixelIcon.astro`
+ * because two callers need it: the component, which renders a masked `<span>`,
+ * and `NowPanel`, which sets the same custom property on a `::before` so the
+ * icon is not a child node. A `<dl>` may only contain `<dt>`, `<dd>` and
+ * `<div>` wrappers, and a wrapper may only contain `<dt>` and `<dd>` — so a
+ * decorative icon inside one has to be drawn by CSS, not markup.
+ *
+ * The brand map is here for a different reason: `config.ts` needs the name
+ * type to validate `socials[].icon`, and importing a type out of an `.astro`
+ * file to do it is not something the config layer should have to know about.
  */
+import githubBrand from './assets/icons/brands/github.svg?url';
+import linkedinBrand from './assets/icons/brands/linkedin.svg?url';
+
+export const brandIcons = {
+  github: githubBrand,
+  linkedin: linkedinBrand,
+} as const;
+
+export type BrandIconName = keyof typeof brandIcons;
+
 import bookOpen from './assets/icons/pixelarticons/book-open-sharp.svg?url';
 import chart from './assets/icons/pixelarticons/chart-sharp.svg?url';
 import computer from './assets/icons/pixelarticons/computer-sharp.svg?url';
