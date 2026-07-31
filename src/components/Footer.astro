@@ -16,6 +16,11 @@ const year = new Date().getFullYear();
     <span>{site.email}</span>
   </a>
 
+  {
+    /* The handle, not just the platform name. "GitHub" alone says where the
+      profile is; "GitHub @erovelli" says who it belongs to, which is the thing
+      a reader recognises and the thing a search engine can match. */
+  }
   <nav class="footer-nav" aria-label="Contact and social">
     {
       site.socials.map((social) => (
@@ -25,7 +30,7 @@ const year = new Date().getFullYear();
           target="_blank"
         >
           {social.label === 'GitHub' && <BrandIcon name="github" />}
-          {social.label}
+          {social.label} {social.handle}
           <span class="sr-only">(opens in a new tab)</span>
         </a>
       ))

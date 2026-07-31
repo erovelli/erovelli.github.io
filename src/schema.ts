@@ -25,6 +25,7 @@ export const personSchema = {
   '@type': 'Person',
   '@id': PERSON_ID,
   name: site.name,
+  alternateName: site.username,
   url: absolute('/'),
   image: absolute('/og.png'),
   jobTitle: site.role,

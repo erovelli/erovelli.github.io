@@ -26,6 +26,19 @@ export interface Social {
 export interface SiteIdentity {
   name: string;
   initials: string;
+  /**
+   * The handle Evan uses everywhere else, and the thing people actually type
+   * into a search box.
+   *
+   * It needs saying out loud. `erovel.li` is the same nine letters with a dot
+   * in them, but a search engine tokenises the domain as "erovel" and "li" and
+   * so matches nothing for the one-word query — while github.com/erovelli and
+   * linkedin.com/in/erovelli carry it in their URL, title and body copy. The
+   * footer renders each profile's `handle`, /about/ states the name in prose,
+   * and `Person.alternateName` asserts it; those three are the same claim in
+   * three registers, which is the only reason the schema is allowed to make it.
+   */
+  username: string;
   role: string;
   description: string;
   domain: string;
@@ -59,8 +72,16 @@ const base: SiteIdentity = identity;
 
 export const site = {
   ...base,
-  /** Default <title>, also used as the Open Graph site title. */
-  title: `${base.name} — ${base.role}`,
+  /**
+   * Homepage <title>. Every other route composes its own as "Page — Name", so
+   * this string is the homepage's alone.
+   *
+   * The parenthesised handle is there on purpose: it is the exact string people
+   * type, and a <title> is the strongest place on a page to answer a query
+   * literally. `og:site_name` stays plain `name`, so the handle appears once,
+   * where it earns its place, rather than in every share card.
+   */
+  title: `${base.name} (${base.username}) — ${base.role}`,
   mailto: `mailto:${base.email}`,
   /** Every URL asserting this identity, for schema.org `sameAs`. */
   sameAs: [...base.socials.map((social) => social.href), ...base.profiles],

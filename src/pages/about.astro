@@ -43,7 +43,7 @@ const subjects = [
 
 <BaseLayout
   title="About"
-  description={`About ${site.name}, a ${site.role.toLowerCase()} in ${site.location}. Local-first tools, systems work, and embedded hardware.`}
+  description={`About ${site.name} (${site.username}), a ${site.role.toLowerCase()} in ${site.location}. Local-first tools, systems work, and embedded hardware.`}
   schemas={schemas}
 >
   <Breadcrumbs trail={trail} current="About" />
@@ -77,11 +77,18 @@ const subjects = [
 
         <h2>Elsewhere</h2>
         <p>
+          Nearly everywhere online I go by <strong>{site.username}</strong> — it is
+          my name with the middle worn off, and it is what {site.domain} spells if
+          you ignore the dot. Code is on <a href={site.socials[0]?.href}
+            >GitHub</a
+          > as {site.socials[0]?.handle}; the more formal version of all this
+          lives on <a href={site.socials[1]?.href}>LinkedIn</a> at {
+            site.socials[1]?.handle
+          }.
+        </p>
+        <p>
           Email is the best way to reach me: <a href={site.mailto}
             >{site.email}</a
-          >. Code is on <a href={site.socials[0]?.href}>GitHub</a>; the more
-          formal version of all this lives on <a href={site.socials[1]?.href}
-            >LinkedIn</a
           >.
         </p>
       </div>

@@ -86,6 +86,15 @@ is also stated in rendered copy — `knowsAbout` has a matching sentence on
 with the visible page is worse than no schema, so if you add a property, add
 the copy that backs it.
 
+**The handle is load-bearing.** `username` in `site.config.json` is "erovelli",
+and it appears in exactly four rendered places: the homepage `<title>`, the
+`/about/` description, the Elsewhere paragraph on `/about/`, and each footer
+link, which is what puts it on every page. `Person.alternateName` asserts it,
+and is only allowed to because those four exist. Do not remove one as
+redundant — the domain reads as the handle to a human but tokenises as "erovel"
+and "li" to a search engine, so without the spelled-out string the site matches
+nothing for the query people actually type.
+
 ## Adding a project or interest
 
 Create a Markdown file in `src/content/projects/` or `src/content/interests/`.
