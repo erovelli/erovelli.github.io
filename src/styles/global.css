@@ -321,12 +321,19 @@ main {
   text-decoration: none;
 }
 
+/*
+  The mark takes the accent while the domain beside it keeps --ink. Every other
+  ruled box on the site puts an accent label inside a --rule border — module
+  titles, metadata terms — and the monogram was the one exception, which left
+  the header's loudest pixels sitting on chrome rather than on content.
+*/
 .wordmark-monogram {
   display: grid;
   place-items: center;
   width: var(--monogram-size);
   height: var(--monogram-size);
   border: var(--rule-width) solid var(--rule);
+  color: var(--accent);
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: 650;
@@ -1141,7 +1148,6 @@ main {
 
 .footer-email {
   gap: var(--space-2xs);
-  color: var(--accent);
 }
 
 .footer-identity {
@@ -1150,7 +1156,20 @@ main {
   gap: var(--space-2xs);
 }
 
-.footer-identity .pixel-icon {
+/*
+  Marks carry the accent; labels do not.
+
+  The footer is the one strip on the site where a link, a non-link and two
+  brand marks sit side by side, and colouring labels made three neighbours read
+  as three different kinds of thing: the email address arrived as an accent
+  link while the profiles two inches away sat at body-text muted, and the
+  GitHub and LinkedIn glyphs went grey with them because both icon classes mask
+  `currentColor`. Tinting only the marks gives the row one rhythm and leaves
+  every label at the footer's own value. The links stay identifiable by their
+  underline, which is the sturdier signal regardless.
+*/
+.site-footer .pixel-icon,
+.site-footer .brand-icon {
   color: var(--accent);
 }
 
