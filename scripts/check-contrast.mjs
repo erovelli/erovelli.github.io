@@ -1,9 +1,9 @@
 /**
- * Verifies the colour tokens in src/styles/global.css meet their contrast
+ * Verifies the color tokens in src/styles/global.css meet their contrast
  * targets in both themes.
  *
  * The token values are parsed out of the stylesheet rather than restated here,
- * so this cannot drift: changing a colour and re-running `npm run validate` is
+ * so this cannot drift: changing a color and re-running `npm run validate` is
  * the only way to find out whether the change is legible. Without this, the
  * palette's accessibility is a claim in a README that nothing enforces.
  *
@@ -31,7 +31,7 @@ const PERCEPTIBLE = 1.5;
 
 /**
  * Every foreground/background combination the stylesheet actually produces.
- * Add a row whenever a rule pairs a new text colour with a new surface.
+ * Add a row whenever a rule pairs a new text color with a new surface.
  */
 const PAIRS = [
   ['--ink', '--canvas', AA_TEXT, 'body text on the page'],
@@ -82,7 +82,7 @@ function rootBlock(css, from = 0) {
   return null;
 }
 
-/** Resolves `var(--x)` chains down to a literal hex colour. */
+/** Resolves `var(--x)` chains down to a literal hex color. */
 function resolve(name, tokens, seen = new Set()) {
   const value = tokens.get(name);
   if (value === undefined) throw new Error(`token ${name} is not defined`);
@@ -92,7 +92,7 @@ function resolve(name, tokens, seen = new Set()) {
   if (reference) return resolve(reference[1], tokens, new Set([...seen, name]));
 
   if (!/^#[0-9a-f]{6}$/i.test(value)) {
-    throw new Error(`token ${name} is not a 6-digit hex colour: ${value}`);
+    throw new Error(`token ${name} is not a 6-digit hex color: ${value}`);
   }
   return value.toLowerCase();
 }
@@ -102,12 +102,12 @@ function resolve(name, tokens, seen = new Set()) {
 const channels = (hex) =>
   [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
 
-const linearise = (c) =>
+const linearize = (c) =>
   c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 
 /** Relative luminance, WCAG 2.x definition. */
 function luminance(hex) {
-  const [r, g, b] = channels(hex).map(linearise);
+  const [r, g, b] = channels(hex).map(linearize);
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 

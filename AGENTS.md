@@ -33,7 +33,7 @@ src/content/              projects/ and interests/ as Markdown
 src/content.config.ts     Zod schemas for both collections
 src/pages/                routes, plus robots.txt.ts and manifest.json.ts
 scripts/check-build.mjs   post-build verification, zero dependencies
-scripts/generate-assets.mjs  rasterises icons and the OG card
+scripts/generate-assets.mjs  rasterizes icons and the OG card
 tools/icon.svg            source of truth for every icon
 public/                   generated assets + self-hosted Inter subsets
 ```
@@ -45,7 +45,7 @@ social links are read from there. If you find yourself typing "Cambridge" into a
 component, stop — that is the bug this structure exists to prevent. Prose about
 Evan lives in `src/pages/about.astro` and the content collections.
 
-**No raw values in CSS.** Every colour, size, space and width is a token in
+**No raw values in CSS.** Every color, size, space and width is a token in
 `global.css`. Need something that does not exist? Add a token. Components
 reference semantic tokens (`--color-text-muted`), never palette primitives
 (`--stone-600`), because that is what makes the dark theme a ten-line change.
@@ -56,7 +56,12 @@ because a toggle needs JS and a persistence story. If you genuinely need
 interactivity, use an Astro island and keep it to that one component.
 
 **One left edge.** Everything in `.site-shell` aligns to the same left margin;
-text is constrained with `max-width`, never centred. Do not add centred columns.
+text is constrained with `max-width`, never centered. Do not add centered columns.
+
+**American English everywhere.** Color, behavior, organize, optimize, centered,
+gray. This covers rendered copy, code comments, identifiers and these docs
+alike — Evan is American, and a site that says "colour" in one file and "color"
+in the next reads as written by two people.
 
 **Microcopy floor is `--text-2xs` (13px).** The first version of this site set
 labels at 10px uppercase with letterspacing. That is decoration pretending to be
@@ -91,7 +96,7 @@ and it appears in exactly four rendered places: the homepage `<title>`, the
 `/about/` description, the Elsewhere paragraph on `/about/`, and each footer
 link, which is what puts it on every page. `Person.alternateName` asserts it,
 and is only allowed to because those four exist. Do not remove one as
-redundant — the domain reads as the handle to a human but tokenises as "erovel"
+redundant — the domain reads as the handle to a human but tokenizes as "erovel"
 and "li" to a search engine, so without the spelled-out string the site matches
 nothing for the query people actually type.
 

@@ -1,5 +1,5 @@
 /**
- * Rasterises the brand assets the Astro pipeline cannot produce: PNG icons (for
+ * Rasterizes the brand assets the Astro pipeline cannot produce: PNG icons (for
  * platforms that still ignore SVG favicons) and the Open Graph card used in link
  * previews.
  *

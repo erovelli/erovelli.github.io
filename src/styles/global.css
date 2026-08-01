@@ -1,7 +1,7 @@
 /*
   Forest Instrument / Night Terminal
 
-  Theme colours, dimensions, spacing, and type sizes are tokens. Components use
+  Theme colors, dimensions, spacing, and type sizes are tokens. Components use
   semantic values only, so the two palettes share identical geometry.
 */
 
@@ -367,7 +367,7 @@ main {
   padding: var(--space-2xs) var(--space-3xs);
   color: var(--ink);
   line-height: var(--leading-copy);
-  /* --rule-subtle is a hairline colour: on the dark canvas it renders an
+  /* --rule-subtle is a hairline color: on the dark canvas it renders an
      underline that is effectively invisible, so the nav loses its links. */
   text-decoration-color: var(--ink-muted);
 }
@@ -590,7 +590,7 @@ main {
   The icon cell, drawn rather than marked up — see NowPanel. The element
   stretches to fill the grid cell so its right rule lands on the cell edge,
   while the mask is sized explicitly so the glyph stays at --icon-size and
-  centred instead of stretching with it.
+  centered instead of stretching with it.
 */
 .metadata-row::before {
   content: '';
@@ -1160,10 +1160,10 @@ main {
   Marks carry the accent; labels do not.
 
   The footer is the one strip on the site where a link, a non-link and two
-  brand marks sit side by side, and colouring labels made three neighbours read
+  brand marks sit side by side, and coloring labels made three neighbors read
   as three different kinds of thing: the email address arrived as an accent
   link while the profiles two inches away sat at body-text muted, and the
-  GitHub and LinkedIn glyphs went grey with them because both icon classes mask
+  GitHub and LinkedIn glyphs went gray with them because both icon classes mask
   `currentColor`. Tinting only the marks gives the row one rhythm and leaves
   every label at the footer's own value. The links stay identifiable by their
   underline, which is the sturdier signal regardless.

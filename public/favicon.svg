@@ -1,11 +1,11 @@
 <!--
   Source of truth for every site icon (favicon, PWA icons, apple-touch-icon).
-  Deliberately geometry-only: no <text>, so rasterisation does not depend on
+  Deliberately geometry-only: no <text>, so rasterization does not depend on
   font availability and looks identical on every machine and in CI.
 
   This is the outlined ER monogram used in the header, placed on the light
-  canvas so it remains legible against browser chrome. Colours are hardcoded
-  because this file is rasterised outside the CSS pipeline. If the light-theme
+  canvas so it remains legible against browser chrome. Colors are hardcoded
+  because this file is rasterized outside the CSS pipeline. If the light-theme
   canvas, ink or rule changes in src/styles/global.css, update them here and in
   scripts/generate-assets.mjs, then run `npm run assets`.
 -->

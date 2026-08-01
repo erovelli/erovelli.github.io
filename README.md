@@ -22,7 +22,7 @@ npm run dev
 | `npm run dev`            | Development server                                |
 | `npm run build`          | Build the static site into `dist/`                |
 | `npm run check`          | Astro template and TypeScript diagnostics         |
-| `npm run check:contrast` | Verify colour tokens meet WCAG AA in both themes  |
+| `npm run check:contrast` | Verify color tokens meet WCAG AA in both themes   |
 | `npm run check:build`    | Verify `dist/`: links, meta, headings, assets     |
 | `npm run validate`       | Everything CI runs, in order                      |
 | `npm run format`         | Apply Prettier                                    |
@@ -41,7 +41,7 @@ that 404s, or a heading outline that skips from `h1` to `h4`. All of those
 shipped in the first version of this site and passed every other check.
 `scripts/check-build.mjs` walks the built output and fails on them.
 
-`scripts/check-contrast.mjs` parses the colour tokens straight out of
+`scripts/check-contrast.mjs` parses the color tokens straight out of
 `global.css` and asserts every foreground/background pair the stylesheet
 produces clears its target in both themes. Parsing rather than restating the
 values is the point: a palette tweak that hurts legibility fails the build
@@ -113,7 +113,7 @@ build and publish to GitHub Pages; deploys can also be triggered from the
 Actions tab.
 
 The Pages concurrency group uses `cancel-in-progress: false` on purpose: a
-deployment already publishing is allowed to finish rather than being cancelled
+deployment already publishing is allowed to finish rather than being canceled
 mid-flight.
 
 Before the first deployment:

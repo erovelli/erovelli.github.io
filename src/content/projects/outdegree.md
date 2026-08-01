@@ -26,7 +26,7 @@ liveLabel: Chrome Web Store
 ---
 
 I had the idea for Outdegree one evening while failing to fall asleep. I was
-thinking about search engines, and about Spotify Wrapped. Both take behaviour
+thinking about search engines, and about Spotify Wrapped. Both take behavior
 and hand it back to you as something you can look at. The question that kept me
 up was what my own browsing would look like if I were the crawler. I have always
 liked node-and-edge graphs, the Obsidian vault view in particular. Browsing already is a graph. The browser just insists on showing it
@@ -102,7 +102,7 @@ a single match. A regression has to get past both.
 
 ## Release
 
-Tagging a version builds the packaged extension, optimises the WebAssembly,
+Tagging a version builds the packaged extension, optimizes the WebAssembly,
 attaches the artifact to a GitHub Release, and submits it to the Chrome Web
 Store through the store API directly rather than through a third-party action.
 That last step targets a protected environment, so the submission can be held

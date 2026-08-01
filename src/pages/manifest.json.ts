@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { site } from '../config';
 
 /**
- * Web app manifest, generated so the name and colours cannot drift from
+ * Web app manifest, generated so the name and colors cannot drift from
  * site.config.json.
  *
  * Served as `manifest.json` rather than the more conventional

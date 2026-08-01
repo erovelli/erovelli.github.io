@@ -1,6 +1,6 @@
 ---
 title: tidyup
-summary: A local-first file organiser that never phones home. On-device embeddings propose a tidy directory tree, and nothing moves without approval.
+summary: A local-first file organizer that never phones home. On-device embeddings propose a tidy directory tree, and nothing moves without approval.
 status: Pre-alpha
 year: 2026
 order: 1

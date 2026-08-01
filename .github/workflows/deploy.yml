@@ -12,7 +12,7 @@ permissions:
   id-token: write
 
 # cancel-in-progress is deliberately false. A production deployment that is
-# already publishing must be allowed to finish; cancelling it mid-flight can
+# already publishing must be allowed to finish; canceling it mid-flight can
 # leave Pages serving a half-updated site. Queued runs simply wait.
 concurrency:
   group: pages

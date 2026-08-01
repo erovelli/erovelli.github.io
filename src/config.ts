@@ -34,7 +34,7 @@ export interface SiteIdentity {
    * into a search box.
    *
    * It needs saying out loud. `erovel.li` is the same nine letters with a dot
-   * in them, but a search engine tokenises the domain as "erovel" and "li" and
+   * in them, but a search engine tokenizes the domain as "erovel" and "li" and
    * so matches nothing for the one-word query — while github.com/erovelli and
    * linkedin.com/in/erovelli carry it in their URL, title and body copy. The
    * footer renders each profile's `handle`, /about/ states the name in prose,
