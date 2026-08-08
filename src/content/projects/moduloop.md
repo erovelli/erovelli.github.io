@@ -13,9 +13,6 @@ technologies:
 languages:
   - C++
 schemaType: CreativeWork
-related:
-  - hardware-and-audio
-  - systems
 repository: https://github.com/cpcurtin/SDP-Team-28
 live: https://websites.umass.edu/ece-sdp/team-28/
 liveLabel: Team page

@@ -15,9 +15,5 @@ languages:
   - Rust
 schemaType: SoftwareApplication
 applicationCategory: UtilitiesApplication
-related:
-  - local-first-software
-  - rust
-  - systems
 repository: https://github.com/erovelli/tidyup
 ---

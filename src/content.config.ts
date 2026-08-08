@@ -30,19 +30,6 @@ const projects = defineCollection({
       .default('CreativeWork'),
     applicationCategory: z.string().optional(),
     operatingSystem: z.string().optional(),
-    /* Interest slugs. Validated against the collection at build time by the
-       pages that render them, because Zod cannot see sibling collections. */
-    related: z.array(z.string()).default([]),
-  }),
-});
-
-const interests = defineCollection({
-  loader: glob({ base: './src/content/interests', pattern: '**/*.{md,mdx}' }),
-  schema: z.object({
-    title: z.string(),
-    summary: z.string().optional(),
-    order: z.number(),
-    topics: z.array(z.string()),
   }),
 });
 
@@ -59,4 +46,4 @@ const profile = defineCollection({
   }),
 });
 
-export const collections = { projects, interests, profile };
+export const collections = { projects, profile };

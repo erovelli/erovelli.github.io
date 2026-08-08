@@ -14,9 +14,6 @@ languages:
 schemaType: SoftwareApplication
 applicationCategory: UtilitiesApplication
 operatingSystem: Web browser
-related:
-  - rust
-  - local-first-software
 repository: https://github.com/erovelli/utils
 live: https://erovelli.github.io/utils/
 liveLabel: Open tools

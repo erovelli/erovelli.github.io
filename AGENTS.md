@@ -28,9 +28,9 @@ src/config.ts             types site.config.json, derives title/mailto/sameAs, n
 src/schema.ts             every JSON-LD node, built from config and collections
 src/styles/global.css     design tokens and every shared style
 src/layouts/BaseLayout    <head>, meta, social cards, JSON-LD, skip link, shell
-src/components/           Header, Footer, PageIntro, Breadcrumbs, ProjectCard, InterestCard
-src/content/              projects/ and interests/ as Markdown
-src/content.config.ts     Zod schemas for both collections
+src/components/           Header, Footer, PageIntro, Breadcrumbs, ProjectRow
+src/content/              projects/ and profile/ as Markdown
+src/content.config.ts     Zod schemas for the collections
 src/pages/                routes, plus robots.txt.ts and manifest.json.ts
 scripts/check-build.mjs   post-build verification, zero dependencies
 scripts/generate-assets.mjs  rasterizes icons and the OG card
@@ -100,13 +100,13 @@ redundant — the domain reads as the handle to a human but tokenizes as "erovel
 and "li" to a search engine, so without the spelled-out string the site matches
 nothing for the query people actually type.
 
-## Adding a project or interest
+## Adding a project
 
-Create a Markdown file in `src/content/projects/` or `src/content/interests/`.
-The filename becomes the URL slug. Copy the frontmatter from a sibling; the Zod
-schema in `src/content.config.ts` validates it at build time.
+Create a Markdown file in `src/content/projects/`. The filename becomes the URL
+slug. Copy the frontmatter from a sibling; the Zod schema in
+`src/content.config.ts` validates it at build time.
 
-`order` controls sort position. For projects, `featured: true` puts it on the
+`order` controls sort position, and `featured: true` puts a project on the
 homepage — there is no cap, so the homepage shows exactly the featured set.
 
 `summary` is not optional in practice: it is the page's meta description, and
@@ -116,10 +116,7 @@ Projects carry four fields that exist only for structured data. `languages` is
 the machine-readable subset of `technologies`, which mixes languages with
 runtimes and APIs and so cannot be handed to schema.org as-is. `schemaType`
 defaults to `CreativeWork`; claim `SoftwareApplication` only for something a
-visitor can install or run, and give it an `applicationCategory`. `related`
-lists interest slugs, and the project page throws at build time on a slug that
-does not exist. The interest → project direction is the inverse of that list,
-computed at build, so the mapping is declared exactly once.
+visitor can install or run, and give it an `applicationCategory`.
 
 ## Regenerating brand assets
 
@@ -173,9 +170,6 @@ plausible-sounding guesses:
 - **Employment dates and titles.** `/about/` currently says only "at Fidelity".
 - **Education specifics.** Only "computer engineering at UMass Amherst" is
   stated, which is what the ModuLoop entry already implied.
-- **Non-technical interests.** All five entries in `src/content/interests/` are
-  software topics, so `/interests/` currently reads as a second projects page.
-  Anything genuinely off-the-clock has to come from Evan.
 - **Email address.** `site.config.json` uses a personal Gmail address. Consider
   an alias on the domain once DNS is live.
 

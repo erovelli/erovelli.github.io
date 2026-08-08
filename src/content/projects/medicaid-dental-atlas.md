@@ -16,9 +16,6 @@ languages:
 schemaType: SoftwareApplication
 applicationCategory: WebApplication
 operatingSystem: Web browser
-related:
-  - data-visualization
-  - systems
 repository: https://github.com/erovelli/medicaid-dent-policy
 live: https://erovelli.github.io/medicaid-dent-policy/
 liveLabel: Open atlas

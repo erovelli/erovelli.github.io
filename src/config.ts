@@ -116,12 +116,10 @@ export interface NavItem {
 }
 
 /**
- * Primary navigation. Order is deliberate: the work first, then the personal
- * pages, then the biography.
+ * Primary navigation. Order is deliberate: the work first, then the biography.
  */
 export const navigation: readonly NavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'Projects', href: '/projects/' },
-  { label: 'Interests', href: '/interests/' },
   { label: 'About', href: '/about/' },
 ] as const;

@@ -55,12 +55,10 @@ social links, résumé URL — lives in **`site.config.json`** at the repo root.
 `src/config.ts` and the asset generator read it, so the pages, the JSON-LD, the
 manifest and the OG card cannot disagree.
 
-Projects, interests, and the shared “Now” profile content are Markdown content
-collections:
+Projects and the shared “Now” profile content are Markdown content collections:
 
 ```text
 src/content/
-├── interests/
 ├── profile/
 └── projects/
 ```

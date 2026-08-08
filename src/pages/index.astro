@@ -1,6 +1,5 @@
 ---
 import { getCollection } from 'astro:content';
-import InterestRow from '../components/InterestRow.astro';
 import Module from '../components/Module.astro';
 import NowPanel from '../components/NowPanel.astro';
 import ProjectRow from '../components/ProjectRow.astro';
@@ -9,9 +8,6 @@ import { site } from '../config';
 import { websiteSchema } from '../schema';
 
 const projects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order,
-);
-const interests = (await getCollection('interests')).sort(
   (a, b) => a.data.order - b.data.order,
 );
 const outdegree = projects.find((project) => project.id === 'outdegree');
@@ -125,22 +121,6 @@ if (!outdegree || !now) {
         {
           projects.map((project) => (
             <ProjectRow project={project} headingLevel={3} />
-          ))
-        }
-      </div>
-    </Module>
-
-    <Module
-      title="Interests"
-      id="interests"
-      linkHref="/interests/"
-      linkLabel="View all"
-      class="home-interests"
-    >
-      <div class="interest-strip">
-        {
-          interests.map((interest) => (
-            <InterestRow interest={interest} headingLevel={3} />
           ))
         }
       </div>

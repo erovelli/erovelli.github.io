@@ -464,8 +464,7 @@ main {
   grid-template-areas:
     'intro featured'
     'currently featured'
-    'projects projects'
-    'interests interests';
+    'projects projects';
   grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
   gap: var(--space-sm);
   padding-top: var(--space-sm);
@@ -739,10 +738,6 @@ main {
   grid-area: projects;
 }
 
-.home-interests {
-  grid-area: interests;
-}
-
 /* Dense indexes */
 
 .index-list {
@@ -784,29 +779,11 @@ main {
 /*
   An entry with no summary yet drops that cell entirely. Without a matching
   template the remaining children slide left into the description column and
-  the arrow stops meeting the right edge, so each row type restates its
-  columns without one.
+  the arrow stops meeting the right edge, so the bare row restates its columns
+  without one.
 */
 .project-row.index-row-bare {
   grid-template-columns: minmax(10rem, 1.1fr) minmax(0, 1fr) auto;
-}
-
-.interest-row.index-row-bare {
-  grid-template-columns: minmax(0, 1fr) auto;
-}
-
-.interest-row {
-  grid-template-columns: minmax(12rem, 1.1fr) minmax(15rem, 2fr) auto;
-}
-
-/*
-  .row-primary's first column is the project icon. Interests have none, so
-  their kicker and title stack in a single column instead of being dealt into
-  the icon slot and a squeezed remainder.
-*/
-.interest-row .row-primary {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
 }
 
 .row-primary {
@@ -873,26 +850,6 @@ main {
 .row-arrow {
   color: var(--accent);
   font-family: var(--font-mono);
-}
-
-.interest-strip {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-}
-
-.interest-strip .index-row {
-  align-content: start;
-  grid-template-columns: minmax(0, 1fr) auto;
-  padding: var(--space-sm);
-}
-
-.interest-strip .index-row + .index-row {
-  border-top: 0;
-  border-left: var(--rule-width) solid var(--rule-subtle);
-}
-
-.interest-strip .row-summary {
-  display: none;
 }
 
 /* Page and detail layouts */
@@ -1071,21 +1028,6 @@ main {
   border-top: var(--rule-width) solid var(--rule-subtle);
 }
 
-.rail-topics {
-  padding: 0;
-  color: var(--ink-muted);
-  font-size: var(--text-sm);
-  list-style: none;
-}
-
-.rail-topics li {
-  padding: var(--space-xs);
-}
-
-.rail-topics li + li {
-  border-top: var(--rule-width) solid var(--rule-subtle);
-}
-
 .rail-links {
   display: grid;
   border-top: var(--rule-width) solid var(--rule);
@@ -1248,26 +1190,8 @@ main {
       'intro'
       'currently'
       'featured'
-      'projects'
-      'interests';
+      'projects';
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .interest-strip {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .interest-strip .index-row + .index-row {
-    border-top: var(--rule-width) solid var(--rule-subtle);
-    border-left: 0;
-  }
-
-  .interest-strip .index-row:nth-child(even) {
-    border-left: var(--rule-width) solid var(--rule-subtle);
-  }
-
-  .interest-strip .index-row:nth-child(2) {
-    border-top: 0;
   }
 
   .project-row {
@@ -1326,8 +1250,7 @@ main {
     border-left: 0;
   }
 
-  .project-row,
-  .interest-row {
+  .project-row {
     grid-template-columns: minmax(0, 1fr) auto;
   }
 
@@ -1385,17 +1308,6 @@ main {
 
   .featured-project h3 {
     font-size: var(--text-2xl);
-  }
-
-  .interest-strip {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .interest-strip .index-row + .index-row,
-  .interest-strip .index-row:nth-child(even),
-  .interest-strip .index-row:nth-child(2) {
-    border-top: var(--rule-width) solid var(--rule-subtle);
-    border-left: 0;
   }
 
   .index-row {
