@@ -17,11 +17,6 @@ export interface Social {
   icon: BrandIconName;
   /**
    * Emit `rel="me"` on links to this profile, claiming it as the same identity.
-   *
-   * GitHub reciprocates: the profile Website field is rendered with
-   * `rel="nofollow me"`, so the claim is symmetric and machine-verifiable.
-   * LinkedIn does not — it wraps outbound links in a redirector — so an
-   * unreciprocated `rel="me"` there asserts something nothing corroborates.
    */
   me?: boolean;
 }
