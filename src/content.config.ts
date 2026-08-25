@@ -15,6 +15,14 @@ const projects = defineCollection({
     order: z.number(),
     featured: z.boolean().default(false),
     technologies: z.array(z.string()),
+    contributors: z
+      .array(
+        z.object({
+          name: z.string(),
+          url: z.url().optional(),
+        }),
+      )
+      .default([]),
     repository: z.url().optional(),
     live: z.url().optional(),
     liveLabel: z.string().default('Live site'),

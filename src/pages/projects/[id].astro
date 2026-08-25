@@ -32,6 +32,7 @@ const {
   live,
   liveLabel,
 } = project.data;
+const contributors = project.data.contributors ?? [];
 
 const trail = [
   { label: 'Home', href: '/' },
@@ -86,6 +87,26 @@ const schemas = [
             <dt>Technology</dt>
             <dd>{technologies.join(' / ')}</dd>
           </div>
+          {
+            contributors.length > 0 && (
+              <div>
+                <dt>Team</dt>
+                <dd>
+                  <ul class="rail-team-list">
+                    {contributors.map((contributor) => (
+                      <li>
+                        {contributor.url ? (
+                          <a href={contributor.url}>{contributor.name}</a>
+                        ) : (
+                          contributor.name
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+            )
+          }
         </dl>
       </section>
 

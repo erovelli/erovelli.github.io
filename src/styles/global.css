@@ -1028,6 +1028,15 @@ main {
   border-top: var(--rule-width) solid var(--rule-subtle);
 }
 
+.rail-team-list {
+  padding: 0;
+  list-style: none;
+}
+
+.rail-team-list li + li {
+  margin-top: var(--space-3xs);
+}
+
 .rail-links {
   display: grid;
   border-top: var(--rule-width) solid var(--rule);

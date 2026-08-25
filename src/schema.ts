@@ -81,9 +81,22 @@ export function breadcrumbSchema(crumbs: readonly Crumb[]) {
  */
 export function projectSchema(project: CollectionEntry<'projects'>) {
   const { data, id } = project;
+  const contributors = data.contributors ?? [];
   const sameAs = [data.repository, data.live].filter(
     (url): url is string => typeof url === 'string',
   );
+  const creators =
+    contributors.length > 0
+      ? contributors.map(({ name, url }) =>
+          name === site.name
+            ? { '@id': PERSON_ID }
+            : {
+                '@type': 'Person',
+                name,
+                ...(url ? { url } : {}),
+              },
+        )
+      : [{ '@id': PERSON_ID }];
 
   return {
     '@context': 'https://schema.org',
@@ -92,8 +105,8 @@ export function projectSchema(project: CollectionEntry<'projects'>) {
     name: data.title,
     url: absolute(`/projects/${id}/`),
     ...(data.summary ? { description: data.summary } : {}),
-    author: { '@id': PERSON_ID },
-    creator: { '@id': PERSON_ID },
+    author: creators,
+    creator: creators,
     isPartOf: { '@id': WEBSITE_ID },
     datePublished: String(data.year),
     ...(data.languages.length > 0
